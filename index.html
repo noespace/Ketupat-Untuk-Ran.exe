@@ -1,800 +1,1380 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <base target="_top">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Ketupat untuk Ran</title>
-
-  <style>
-    /* =========================================================
-       BASIC
-    ========================================================= */
-
-    * {
-      box-sizing: border-box;
-    }
-
-    :root {
-      --cream: #f3eddd;
-      --paper: #fffdf6;
-      --ink: #292922;
-      --green: #78995a;
-      --green-light: #b7cf84;
-      --yellow: #f5df91;
-      --pink: #eab1ac;
-      --blue: #c9e1e4;
-      --brown: #9d7147;
-    }
-
-    html,
-    body {
-      margin: 0;
-      min-height: 100%;
-    }
-
-    body {
-      font-family: Georgia, "Times New Roman", serif;
-      background: var(--cream);
-      color: var(--ink);
-      overflow: hidden;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    button {
-      font: inherit;
-    }
+<title>Ketupat untuk Ran</title>
 
-    /* paper grain */
-
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: .10;
-      z-index: 9999;
+<style>
 
-      background-image:
-        radial-gradient(#222 0.45px, transparent 0.45px);
+*{
+  box-sizing:border-box;
+}
 
-      background-size: 7px 7px;
-    }
+:root{
+  --cream:#f6efdf;
+  --paper:#fffaf0;
+  --ink:#29251f;
 
+  --pink:#efb0ac;
+  --blue:#c6e2eb;
+  --green:#d7e7b0;
+  --green-dark:#91ae62;
+  --yellow:#f4db88;
+  --orange:#efbe86;
+  --purple:#ddd0ed;
 
-    /* =========================================================
-       APP
-    ========================================================= */
+  --shadow:rgba(71,53,30,.16);
+}
 
-    #app {
-      width: 100%;
-      height: 100vh;
-      position: relative;
-      overflow: hidden;
-    }
+html,
+body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
 
-    .slide {
-      position: absolute;
-      inset: 0;
+body{
+  font-family:
+    "Trebuchet MS",
+    Arial,
+    sans-serif;
 
-      padding:
-        55px
-        max(30px, calc((100vw - 1000px) / 2))
-        100px;
+  color:var(--ink);
 
-      display: flex;
-      justify-content: center;
-      align-items: center;
+  background:
+    radial-gradient(
+      circle at 25% 20%,
+      rgba(255,255,255,.8),
+      transparent 35%
+    ),
+    var(--cream);
+}
 
-      opacity: 0;
-      visibility: hidden;
 
-      transform: translateX(30px);
+/* paper grain */
 
-      transition:
-        opacity .4s ease,
-        transform .4s ease,
-        visibility .4s;
-    }
+body::after{
+  content:"";
 
-    .slide.active {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(0);
-    }
+  position:fixed;
+  inset:0;
 
+  pointer-events:none;
 
-    /* =========================================================
-       PAPER
-    ========================================================= */
+  opacity:.07;
 
-    .paper {
-      width: min(900px, 92vw);
-      max-height: 76vh;
-      overflow-y: auto;
+  background-image:
+    radial-gradient(
+      #352b1e .55px,
+      transparent .55px
+    );
 
-      padding: 42px 48px;
+  background-size:8px 8px;
 
-      background: var(--paper);
+  z-index:99999;
+}
 
-      border: 1px solid rgba(50,40,20,.12);
 
-      box-shadow:
-        0 14px 35px rgba(50,40,20,.12),
-        4px 4px 0 rgba(255,255,255,.8);
+/* =========================================================
+   APP
+========================================================= */
 
-      position: relative;
+#app{
+  width:100%;
+  height:100vh;
 
-      transform: rotate(-.25deg);
+  position:relative;
 
-      scrollbar-width: thin;
-    }
+  overflow:hidden;
+}
 
-    .paper::before {
-      content: "";
-      position: absolute;
 
-      width: 120px;
-      height: 28px;
+/* =========================================================
+   SLIDES
+========================================================= */
 
-      top: -10px;
-      left: 50%;
+.slide{
+  position:absolute;
+  inset:0;
 
-      transform:
-        translateX(-50%)
-        rotate(-2deg);
+  padding:
+    55px 5vw
+    95px;
 
-      background:
-        rgba(218,197,142,.55);
-    }
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
+  opacity:0;
+  visibility:hidden;
 
-    /* =========================================================
-       TYPOGRAPHY
-    ========================================================= */
+  transform:
+    translateY(12px)
+    scale(.985);
 
-    .chapter {
-      display: inline-block;
+  transition:
+    opacity .45s ease,
+    transform .45s ease,
+    visibility .45s;
 
-      font-family:
-        "Courier New",
-        monospace;
+  overflow:hidden;
+}
 
-      font-size: 12px;
+.slide.active{
+  opacity:1;
+  visibility:visible;
 
-      letter-spacing: 1.5px;
+  transform:
+    translateY(0)
+    scale(1);
+}
 
-      padding: 7px 12px;
 
-      background: var(--yellow);
+/* =========================================================
+   SCRAPBOOK PANEL
+========================================================= */
 
-      transform: rotate(-1.5deg);
+.scrap{
+  width:
+    min(
+      1000px,
+      91vw
+    );
 
-      margin-bottom: 20px;
-    }
+  max-height:78vh;
 
-    h1 {
-      font-size:
-        clamp(42px, 7vw, 82px);
+  position:relative;
 
-      line-height: .98;
+  display:grid;
 
-      margin:
-        0 0 24px;
+  grid-template-columns:
+    minmax(0,1fr)
+    245px;
 
-      font-weight: normal;
-    }
+  gap:32px;
 
-    h2 {
-      font-size:
-        clamp(28px, 4vw, 44px);
+  padding:
+    42px
+    44px;
 
-      line-height: 1.1;
+  background:
+    var(--paper);
 
-      margin:
-        0 0 24px;
+  border:
+    2px solid
+    rgba(69,53,32,.16);
 
-      font-weight: normal;
-    }
+  border-radius:5px;
 
-    p {
-      font-size: 17px;
-      line-height: 1.72;
+  box-shadow:
+    0 18px 35px
+    var(--shadow),
+    7px 7px 0
+    rgba(255,255,255,.7);
 
-      margin:
-        0 0 17px;
-    }
+  overflow-y:auto;
+}
 
-    strong {
-      font-weight: bold;
-    }
+.scrap.no-image{
+  grid-template-columns:1fr;
+}
 
-    .tiny {
-      font-family:
-        "Courier New",
-        monospace;
+.scrap::before{
+  content:"";
 
-      font-size: 12px;
+  position:absolute;
 
-      opacity: .65;
-    }
+  width:115px;
+  height:27px;
 
-    .highlight {
-      background:
-        linear-gradient(
-          transparent 55%,
-          #f6e7a5 55%
-        );
-    }
+  top:-9px;
+  left:9%;
 
-    .big-line {
-      font-size:
-        clamp(24px, 3vw, 36px);
+  background:
+    rgba(
+      219,
+      194,
+      131,
+      .52
+    );
 
-      line-height: 1.3;
-    }
+  transform:
+    rotate(-4deg);
+}
 
-    .center {
-      text-align: center;
-    }
+.scrap::after{
+  content:"";
 
-    .spacer {
-      height: 15px;
-    }
+  position:absolute;
 
+  width:100px;
+  height:25px;
 
-    /* =========================================================
-       COVER
-    ========================================================= */
+  right:9%;
+  top:-8px;
 
-    #slide0 {
-      background:
-        linear-gradient(
-          #cce5ec 0%,
-          #eaf3ea 65%,
-          #bdd48d 65%,
-          #a5c576 100%
-        );
-    }
+  background:
+    rgba(
+      219,
+      194,
+      131,
+      .42
+    );
 
-    .cover {
-      text-align: center;
-      position: relative;
-      z-index: 20;
-    }
+  transform:
+    rotate(3deg);
+}
 
-    .cover h1 {
-      margin-bottom: 10px;
-    }
 
-    .cover-sub {
-      display: inline-block;
+/* colored back papers */
 
-      padding: 7px 14px;
+.bg-pink{
+  box-shadow:
+    8px 8px 0
+    #e8bab5,
+    0 18px 35px var(--shadow);
+}
 
-      background:
-        rgba(255,255,255,.68);
+.bg-blue{
+  box-shadow:
+    8px 8px 0
+    #bddce6,
+    0 18px 35px var(--shadow);
+}
 
-      transform: rotate(-1deg);
+.bg-green{
+  box-shadow:
+    8px 8px 0
+    #d3e4ac,
+    0 18px 35px var(--shadow);
+}
 
-      margin-bottom: 32px;
-    }
+.bg-yellow{
+  box-shadow:
+    8px 8px 0
+    #edd58d,
+    0 18px 35px var(--shadow);
+}
 
+.bg-purple{
+  box-shadow:
+    8px 8px 0
+    #d8cbea,
+    0 18px 35px var(--shadow);
+}
 
-    /* =========================================================
-       KETUPAT
-    ========================================================= */
 
-    .ketupat-wrap {
-      width: 200px;
-      height: 220px;
+/* =========================================================
+   CONTENT
+========================================================= */
 
-      margin: 0 auto 12px;
+.content{
+  min-width:0;
 
-      cursor: pointer;
+  position:relative;
 
-      position: relative;
+  z-index:2;
+}
 
-      transition:
-        transform .2s ease;
-    }
+h1,
+h2,
+h3,
+p{
+  margin-top:0;
+}
 
-    .ketupat-wrap:hover {
-      transform:
-        rotate(-3deg)
-        scale(1.07);
-    }
+h1{
+  font-family:
+    Georgia,
+    serif;
 
-    .ketupat-body {
-      width: 145px;
-      height: 145px;
+  font-size:
+    clamp(
+      46px,
+      7vw,
+      86px
+    );
 
-      position: absolute;
+  font-weight:500;
 
-      left: 28px;
-      top: 20px;
+  line-height:1;
 
-      transform: rotate(45deg);
+  margin-bottom:24px;
+}
 
-      border-radius: 10px;
+h2{
+  font-family:
+    Georgia,
+    serif;
 
-      background:
-        linear-gradient(
-          45deg,
-          transparent 28%,
-          #d9e58d 29%,
-          #d9e58d 45%,
-          transparent 46%
-        ),
-        linear-gradient(
-          -45deg,
-          transparent 28%,
-          #a8c866 29%,
-          #a8c866 45%,
-          transparent 46%
-        ),
-        #739847;
+  font-size:
+    clamp(
+      29px,
+      4vw,
+      45px
+    );
 
-      box-shadow:
-        0 15px 24px
-        rgba(0,0,0,.18);
-    }
+  font-weight:500;
 
-    .ketupat-tail {
-      width: 8px;
-      height: 85px;
+  margin-bottom:24px;
+}
 
-      background: #688d42;
+p{
+  font-size:16px;
 
-      position: absolute;
+  line-height:1.7;
 
-      left: 99px;
-      top: 143px;
+  margin-bottom:15px;
+}
 
-      transform: rotate(8deg);
+.big{
+  font-size:
+    clamp(
+      22px,
+      3vw,
+      32px
+    );
 
-      border-radius: 10px;
-    }
+  line-height:1.3;
+}
 
-    .ketupat-wrap {
-      animation:
-        ketupatFloat
-        2.5s
-        ease-in-out
-        infinite;
-    }
+.small{
+  font-family:
+    "Courier New",
+    monospace;
 
-    @keyframes ketupatFloat {
-      0%,100% {
-        transform:
-          translateY(0)
-          rotate(-2deg);
-      }
+  font-size:12px;
 
-      50% {
-        transform:
-          translateY(-8px)
-          rotate(2deg);
-      }
-    }
+  line-height:1.45;
 
+  opacity:.68;
+}
 
-    /* =========================================================
-       SCRAPBOOK ELEMENTS
-    ========================================================= */
+.center{
+  text-align:center;
+}
 
-    .sticky {
-      position: absolute;
+.chapter{
+  display:inline-block;
 
-      width: 175px;
+  padding:
+    8px
+    13px;
 
-      padding: 15px;
+  margin-bottom:20px;
 
-      font-family:
-        "Courier New",
-        monospace;
+  font:
+    700
+    13px/1
+    "Courier New",
+    monospace;
 
-      font-size: 12px;
+  border:
+    1.5px
+    solid
+    rgba(0,0,0,.15);
 
-      line-height: 1.5;
+  box-shadow:
+    2px 2px 0
+    rgba(0,0,0,.12);
 
-      box-shadow:
-        3px 4px 10px
-        rgba(0,0,0,.12);
-    }
+  transform:
+    rotate(-1.5deg);
+}
 
-    .sticky.yellow {
-      background: #fff1a9;
-    }
+.tag-pink{
+  background:var(--pink);
+}
 
-    .sticky.pink {
-      background: #edb0aa;
-    }
+.tag-blue{
+  background:var(--blue);
+}
 
-    .sticky.left {
-      left: 6%;
-      top: 42%;
+.tag-green{
+  background:var(--green);
+}
 
-      transform:
-        rotate(-4deg);
-    }
+.tag-yellow{
+  background:var(--yellow);
+}
 
-    .sticky.right {
-      right: 6%;
-      top: 40%;
+.tag-purple{
+  background:var(--purple);
+}
 
-      transform:
-        rotate(4deg);
-    }
+.quote{
+  margin:
+    18px
+    0;
 
-    .quote {
-      padding: 15px 18px;
+  padding:
+    14px
+    17px;
 
-      margin:
-        20px 0;
+  border-left:
+    4px solid
+    var(--green-dark);
 
-      border-left:
-        3px solid var(--green);
+  background:
+    #eef4dd;
+}
 
-      background:
-        #eef1df;
+.highlight{
+  background:
+    linear-gradient(
+      transparent 55%,
+      #f3dd8c 55%
+    );
+}
 
-      font-style: italic;
-    }
 
-    .fake-system {
-      font-family:
-        "Courier New",
-        monospace;
+/* =========================================================
+   MEME / IMAGE AREA
+========================================================= */
 
-      background: #272822;
-      color: #f5f2df;
+.visual-column{
+  min-width:0;
 
-      padding: 18px;
+  display:flex;
+  flex-direction:column;
 
-      margin: 22px 0;
+  justify-content:center;
+  align-items:center;
 
-      border-radius: 3px;
+  gap:18px;
 
-      font-size: 13px;
+  position:relative;
 
-      line-height: 1.7;
-    }
+  z-index:3;
+}
 
+.polaroid{
+  width:100%;
 
-    /* =========================================================
-       BIRDS
-    ========================================================= */
+  background:white;
 
-    .bird {
-      position: fixed;
+  padding:
+    10px
+    10px
+    30px;
 
-      left: -100px;
+  border:
+    1px solid
+    rgba(0,0,0,.18);
 
-      z-index: 4;
+  box-shadow:
+    5px 7px 13px
+    rgba(0,0,0,.14);
 
-      pointer-events: none;
+  transform:
+    rotate(3deg);
 
-      animation:
-        fly
-        linear
-        infinite;
-    }
+  position:relative;
+}
 
-    .bird.one {
-      top: 12%;
-      font-size: 35px;
-      animation-duration: 16s;
-    }
+.polaroid:nth-child(even){
+  transform:
+    rotate(-3deg);
+}
 
-    .bird.two {
-      top: 27%;
-      font-size: 25px;
-      animation-duration: 21s;
-      animation-delay: -8s;
-    }
+.polaroid::before{
+  content:"";
 
-    .bird.three {
-      top: 72%;
-      font-size: 29px;
-      animation-duration: 24s;
-      animation-delay: -13s;
-    }
+  position:absolute;
 
-    @keyframes fly {
-      0% {
-        left: -100px;
-        transform:
-          translateY(0)
-          rotate(-4deg);
-      }
+  width:72px;
+  height:20px;
 
-      25% {
-        transform:
-          translateY(-20px)
-          rotate(3deg);
-      }
+  top:-9px;
+  left:50%;
 
-      50% {
-        transform:
-          translateY(12px)
-          rotate(-2deg);
-      }
+  transform:
+    translateX(-50%)
+    rotate(-4deg);
 
-      75% {
-        transform:
-          translateY(-12px)
-          rotate(3deg);
-      }
+  background:
+    rgba(
+      218,
+      191,
+      121,
+      .55
+    );
+}
 
-      100% {
-        left: calc(100vw + 100px);
-        transform:
-          translateY(0)
-          rotate(-3deg);
-      }
-    }
+.image-slot{
+  width:100%;
 
+  aspect-ratio:
+    4 / 4;
 
-    /* =========================================================
-       NAVIGATION
-    ========================================================= */
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
-    .nav {
-      position: fixed;
+  text-align:center;
 
-      bottom: 22px;
-      left: 50%;
+  padding:18px;
 
-      transform:
-        translateX(-50%);
+  border:
+    2px dashed
+    #c3b8a5;
 
-      width:
-        min(900px, 90vw);
+  background:
+    #f8f3e8;
 
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+  color:
+    #817665;
 
-      z-index: 100;
-    }
+  font:
+    12px/1.5
+    "Courier New",
+    monospace;
+}
 
-    .nav-button {
-      border:
-        1.5px solid #282822;
+.image-slot.landscape{
+  aspect-ratio:
+    4 / 3;
+}
 
-      background:
-        rgba(255,253,246,.92);
+.image-slot img{
+  width:100%;
+  height:100%;
 
-      padding:
-        10px 18px;
+  object-fit:cover;
+}
 
-      cursor: pointer;
+.caption{
+  margin-top:9px;
 
-      box-shadow:
-        3px 3px 0
-        #282822;
+  text-align:center;
 
-      transition:
-        .15s ease;
-    }
+  font:
+    11px/1.4
+    "Courier New",
+    monospace;
+}
 
-    .nav-button:hover {
-      transform:
-        translate(-2px,-2px);
 
-      box-shadow:
-        5px 5px 0
-        #282822;
-    }
+/* Use this when you add real images later */
 
-    #backBtn.hidden,
-    #nextBtn.hidden {
-      visibility: hidden;
-    }
+.real-image{
+  width:100%;
 
-    .counter {
-      font-family:
-        "Courier New",
-        monospace;
+  display:block;
 
-      font-size: 12px;
+  aspect-ratio:1/1;
 
-      background:
-        rgba(255,253,246,.8);
+  object-fit:cover;
+}
 
-      padding:
-        6px 10px;
-    }
 
+/* =========================================================
+   DOODLES
+========================================================= */
 
-    /* =========================================================
-       MUSIC
-    ========================================================= */
+.doodle{
+  position:absolute;
 
-    .music {
-      position: fixed;
+  pointer-events:none;
 
-      top: 17px;
-      right: 18px;
+  user-select:none;
 
-      z-index: 500;
+  font-size:24px;
 
-      display: flex;
-      align-items: center;
-      gap: 8px;
+  z-index:1;
+}
 
-      padding:
-        7px 11px;
+.star-one{
+  top:18px;
+  right:28px;
 
-      background:
-        rgba(255,253,246,.85);
+  transform:
+    rotate(16deg);
+}
 
-      border:
-        1px solid rgba(0,0,0,.2);
+.heart-one{
+  bottom:22px;
+  left:28px;
 
-      font-family:
-        "Courier New",
-        monospace;
+  transform:
+    rotate(-12deg);
+}
 
-      font-size: 11px;
-    }
+.flower-one{
+  bottom:14px;
+  right:28px;
+}
 
-    .music button {
-      border: none;
-      background: none;
-      cursor: pointer;
-      font-size: 15px;
-    }
 
+/* =========================================================
+   COVER
+========================================================= */
 
-    /* =========================================================
-       FORGIVENESS
-    ========================================================= */
+#slide0{
+  background:
+    linear-gradient(
+      #cfe8ed 0 64%,
+      #d7e8ad 64% 100%
+    );
+}
 
-    .forgive-area {
-      position: relative;
+.cover-wrap{
+  width:
+    min(
+      1040px,
+      94vw
+    );
 
-      width: 100%;
-      height: 230px;
+  height:
+    min(
+      720px,
+      82vh
+    );
 
-      margin-top: 30px;
-    }
+  position:relative;
 
-    .choice {
-      position: absolute;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
 
-      border:
-        2px solid #282822;
+.cover-paper{
+  width:
+    min(
+      800px,
+      87vw
+    );
 
-      padding:
-        14px 22px;
+  padding:
+    42px
+    36px;
 
-      cursor: pointer;
+  text-align:center;
 
-      font-size: 17px;
+  background:
+    #fffaf0;
 
-      box-shadow:
-        4px 4px 0
-        #282822;
-    }
+  border:
+    2px solid
+    rgba(
+      60,
+      49,
+      33,
+      .15
+    );
 
-    #yesBtn {
-      background: #b5d18b;
+  box-shadow:
+    8px 8px 0
+    #efb9b0,
+    0 18px 36px
+    rgba(
+      70,
+      52,
+      28,
+      .17
+    );
 
-      left: 15%;
-      top: 60px;
-    }
+  border-radius:7px;
 
-    #noBtn {
-      background: #e9aaa5;
+  position:relative;
+}
 
-      right: 15%;
-      top: 60px;
+.cover-paper::before{
+  content:"";
 
-      transition:
-        left .12s,
-        top .12s;
-    }
+  position:absolute;
 
+  width:140px;
+  height:29px;
 
-    /* =========================================================
-       FINAL
-    ========================================================= */
+  top:-12px;
+  left:50%;
 
-    .final-title {
-      font-size:
-        clamp(55px, 10vw, 110px);
+  transform:
+    translateX(-50%)
+    rotate(-3deg);
 
-      margin-bottom: 15px;
-    }
+  background:
+    rgba(
+      218,
+      191,
+      121,
+      .55
+    );
+}
 
-    .friend-line {
-      font-size:
-        clamp(27px, 4vw, 48px);
+.cover-note{
+  display:inline-block;
 
-      margin:
-        30px 0;
-    }
+  padding:
+    8px
+    14px;
 
+  margin-bottom:12px;
 
-    /* =========================================================
-       CONFETTI
-    ========================================================= */
+  background:
+    #e1eabf;
 
-    .confetti {
-      position: fixed;
+  transform:
+    rotate(-1deg);
 
-      z-index: 9000;
+  font:
+    12px
+    "Courier New",
+    monospace;
+}
 
-      top: -30px;
 
-      pointer-events: none;
+/* ketupat */
 
-      animation:
-        fall
-        3.2s
-        linear
-        forwards;
-    }
+.ketupat{
+  width:210px;
+  height:230px;
 
-    @keyframes fall {
-      to {
-        transform:
-          translateY(110vh)
-          rotate(600deg);
+  position:relative;
 
-        opacity: 0;
-      }
-    }
+  margin:
+    15px
+    auto
+    5px;
 
+  cursor:pointer;
 
-    /* =========================================================
-       MOBILE
-    ========================================================= */
+  animation:
+    ketupatFloat
+    2.8s
+    ease-in-out
+    infinite;
+}
 
-    @media (max-width: 700px) {
+.ketupat:hover{
+  filter:
+    brightness(1.05);
+}
 
-      .slide {
-        padding:
-          45px 15px 90px;
-      }
+.ketupat-body{
+  width:145px;
+  height:145px;
 
-      .paper {
-        width: 94vw;
-        max-height: 78vh;
+  position:absolute;
 
-        padding:
-          32px 25px;
-      }
+  left:32px;
+  top:25px;
 
-      p {
-        font-size: 15.5px;
-      }
+  transform:
+    rotate(45deg);
 
-      .sticky {
-        display: none;
-      }
+  border-radius:10px;
 
-      .nav {
-        width: 92vw;
-      }
+  background:
+    linear-gradient(
+      45deg,
+      transparent 27%,
+      #dcea9b 28%,
+      #dcea9b 44%,
+      transparent 45%
+    ),
+    linear-gradient(
+      -45deg,
+      transparent 27%,
+      #a7c56b 28%,
+      #a7c56b 44%,
+      transparent 45%
+    ),
+    #76974f;
 
-      .choice {
-        font-size: 14px;
-        padding: 12px;
-      }
+  box-shadow:
+    0 13px 22px
+    rgba(
+      0,
+      0,
+      0,
+      .17
+    );
+}
 
-      #yesBtn {
-        left: 5%;
-      }
+.ketupat-tail{
+  width:8px;
+  height:96px;
 
-      #noBtn {
-        right: 5%;
-      }
+  background:
+    #6b8e49;
 
-    }
-  </style>
+  position:absolute;
+
+  left:103px;
+  top:153px;
+
+  transform:
+    rotate(8deg);
+
+  border-radius:10px;
+}
+
+@keyframes ketupatFloat{
+
+  50%{
+    transform:
+      translateY(-10px)
+      rotate(2deg);
+  }
+
+}
+
+
+/* ketupat opening */
+
+.ketupat-transition{
+  position:fixed;
+
+  width:80px;
+  height:80px;
+
+  left:50%;
+  top:50%;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  background:
+    #9eb96d;
+
+  border-radius:15px;
+
+  transform:
+    translate(-50%,-50%)
+    rotate(45deg)
+    scale(.1);
+
+  z-index:9999;
+}
+
+.ketupat-transition.open{
+  animation:
+    ketupatOpen
+    .85s
+    ease
+    forwards;
+}
+
+@keyframes ketupatOpen{
+
+  0%{
+    opacity:.95;
+
+    transform:
+      translate(-50%,-50%)
+      rotate(45deg)
+      scale(.15);
+  }
+
+  55%{
+    opacity:1;
+
+    transform:
+      translate(-50%,-50%)
+      rotate(45deg)
+      scale(13);
+  }
+
+  100%{
+    opacity:0;
+
+    transform:
+      translate(-50%,-50%)
+      rotate(45deg)
+      scale(22);
+  }
+
+}
+
+
+/* =========================================================
+   BIRDS ONLY AROUND EDGES
+========================================================= */
+
+.edge-bird{
+  position:fixed;
+
+  pointer-events:none;
+
+  user-select:none;
+
+  z-index:2;
+
+  font-size:24px;
+}
+
+.edge-top{
+  top:8px;
+
+  animation:
+    flyTop
+    20s
+    linear
+    infinite;
+}
+
+.edge-bottom{
+  bottom:62px;
+
+  animation:
+    flyBottom
+    25s
+    linear
+    infinite;
+}
+
+.edge-left{
+  left:8px;
+  top:32%;
+
+  animation:
+    bobLeft
+    4s
+    ease-in-out
+    infinite;
+}
+
+.edge-right{
+  right:8px;
+  top:58%;
+
+  animation:
+    bobRight
+    4.4s
+    ease-in-out
+    infinite;
+}
+
+@keyframes flyTop{
+
+  from{
+    left:-60px;
+  }
+
+  to{
+    left:
+      calc(
+        100vw + 60px
+      );
+  }
+
+}
+
+@keyframes flyBottom{
+
+  from{
+    right:-60px;
+  }
+
+  to{
+    right:
+      calc(
+        100vw + 60px
+      );
+  }
+
+}
+
+@keyframes bobLeft{
+
+  50%{
+    transform:
+      translateY(28px);
+  }
+
+}
+
+@keyframes bobRight{
+
+  50%{
+    transform:
+      translateY(-28px);
+  }
+
+}
+
+
+/* =========================================================
+   MUSIC
+========================================================= */
+
+.music-reminder{
+  position:fixed;
+
+  top:14px;
+  right:18px;
+
+  z-index:500;
+
+  display:flex;
+  align-items:center;
+
+  gap:9px;
+
+  padding:
+    9px
+    12px;
+
+  background:
+    #fff0ad;
+
+  border:
+    1.5px solid
+    rgba(
+      0,
+      0,
+      0,
+      .17
+    );
+
+  box-shadow:
+    3px 4px 0
+    rgba(
+      0,
+      0,
+      0,
+      .12
+    );
+
+  transform:
+    rotate(1deg);
+
+  font:
+    12px
+    "Courier New",
+    monospace;
+}
+
+.music-reminder.playing{
+  background:
+    #dce9b8;
+}
+
+.music-reminder button{
+  border:none;
+  background:none;
+
+  cursor:pointer;
+
+  font-size:16px;
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.nav{
+  position:fixed;
+
+  bottom:17px;
+  left:50%;
+
+  transform:
+    translateX(-50%);
+
+  width:
+    min(
+      980px,
+      91vw
+    );
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  z-index:500;
+}
+
+.nav-btn{
+  padding:
+    10px
+    18px;
+
+  border:
+    1.5px solid
+    var(--ink);
+
+  background:
+    #fffaf0;
+
+  cursor:pointer;
+
+  box-shadow:
+    3px 3px 0
+    var(--ink);
+
+  transition:.15s;
+}
+
+.nav-btn:hover{
+  transform:
+    translate(-2px,-2px);
+
+  box-shadow:
+    5px 5px 0
+    var(--ink);
+}
+
+.hidden{
+  visibility:hidden;
+}
+
+.counter{
+  padding:
+    6px
+    11px;
+
+  border-radius:3px;
+
+  background:
+    rgba(
+      255,
+      250,
+      240,
+      .9
+    );
+
+  font:
+    12px
+    "Courier New",
+    monospace;
+}
+
+
+/* =========================================================
+   FORGIVENESS
+========================================================= */
+
+.forgive-box{
+  display:grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap:25px;
+
+  margin-top:25px;
+}
+
+.forgive-question{
+  padding:20px;
+
+  background:
+    #fff7d8;
+
+  border:
+    1.5px solid
+    rgba(
+      0,
+      0,
+      0,
+      .15
+    );
+
+  box-shadow:
+    4px 5px 0
+    #e8d5a5;
+
+  transform:
+    rotate(-1deg);
+}
+
+.forgive-area{
+  height:230px;
+
+  position:relative;
+
+  margin-top:20px;
+}
+
+.choice{
+  position:absolute;
+
+  padding:
+    14px
+    20px;
+
+  border:
+    2px solid
+    var(--ink);
+
+  box-shadow:
+    4px 4px 0
+    var(--ink);
+
+  cursor:pointer;
+
+  font-weight:bold;
+
+  transition:
+    left .09s,
+    top .09s;
+}
+
+#yesBtn{
+  left:8%;
+  top:60px;
+
+  background:
+    var(--green);
+}
+
+#noBtn{
+  right:8%;
+  top:60px;
+
+  background:
+    var(--pink);
+}
+
+
+/* live no-text box */
+
+.no-commentary{
+  padding:17px;
+
+  min-height:130px;
+
+  background:
+    #fff8e7;
+
+  border:
+    2px dashed
+    #d1bca0;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  text-align:center;
+
+  font:
+    12px/1.5
+    "Courier New",
+    monospace;
+
+  transform:
+    rotate(1.5deg);
+}
+
+
+/* =========================================================
+   CONFETTI
+========================================================= */
+
+.confetti{
+  position:fixed;
+
+  top:-40px;
+
+  z-index:9998;
+
+  pointer-events:none;
+
+  animation:
+    fall
+    3.2s
+    linear
+    forwards;
+}
+
+@keyframes fall{
+
+  to{
+    transform:
+      translateY(110vh)
+      rotate(650deg);
+
+    opacity:0;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(
+  max-width:760px
+){
+
+  .slide{
+    padding:
+      48px
+      13px
+      88px;
+  }
+
+  .scrap{
+    width:94vw;
+
+    grid-template-columns:1fr;
+
+    padding:
+      31px
+      23px;
+
+    max-height:78vh;
+  }
+
+  .visual-column{
+    display:none;
+  }
+
+  p{
+    font-size:15px;
+  }
+
+  .music-reminder{
+    top:7px;
+    right:7px;
+
+    font-size:10px;
+  }
+
+  .forgive-box{
+    grid-template-columns:1fr;
+  }
+
+  .no-commentary{
+    display:none;
+  }
+
+}
+
+
+/* =========================================================
+   DECORATIVE LITTLE CORNERS
+========================================================= */
+
+.corner-sticker{
+  position:absolute;
+
+  font-size:25px;
+
+  pointer-events:none;
+}
+
+.corner-a{
+  right:20px;
+  top:16px;
+}
+
+.corner-b{
+  left:18px;
+  bottom:14px;
+}
+
+</style>
 </head>
 
 
@@ -802,934 +1382,1508 @@
 
 <div id="app">
 
-  <!-- BURUNG GLOBAL -->
-
-  <div class="bird one">🐦</div>
-  <div class="bird two">🕊️</div>
-  <div class="bird three">🐤</div>
-
-
-  <!-- =======================================================
-       SLIDE 0
-  ======================================================== -->
-
-  <section class="slide active" id="slide0">
-
-    <div class="cover">
-
-      <div class="tiny">
-        ketupat_for_ran.html
-      </div>
-
-      <h1>
-        ketupat<br>
-        untuk ran
-      </h1>
-
-      <div class="cover-sub">
-        sebuah website yang sebetulnya
-        tidak perlu dibuat sejauh ini
-      </div>
-
-      <div
-        class="ketupat-wrap"
-        onclick="goTo(1)"
-      >
-
-        <div class="ketupat-body"></div>
-        <div class="ketupat-tail"></div>
-
-      </div>
-
-      <div class="tiny">
-        klik ketupatnya<br>
-        ga ada malware kok
-      </div>
-
-    </div>
-
-
-    <div class="sticky yellow left">
-      isi website:<br><br>
-      minta maaf<br>
-      observasi random<br>
-      ketupat
-    </div>
-
-
-    <div class="sticky pink right">
-      dibuat karena
-      chat apparently
-      tidak cukup
-    </div>
-
-  </section>
-
-
-  <!-- =======================================================
-       SLIDE 1
-  ======================================================== -->
-
-  <section class="slide" id="slide1">
-
-    <div class="paper">
-
-      <div class="chapter">
-        01 / HALO RAN
-      </div>
-
-      <h2>Halo Ran,</h2>
-
-      <p>
-        Saya sampai hari ini masih kepikiran
-        soal protes kamu kemarin.
-      </p>
-
-      <p>
-        Sejujurnya saya agak kaget karena
-        kesalahan saya itu saya hampir
-        diblok oleh Ran.
-      </p>
-
-      <p>
-        Untung kamu ngomong.
-      </p>
-
-      <p>
-        Saya respect sih karena
-        <i>letting me know</i>
-        dan tidak mengghosting tiba-tiba.
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- =======================================================
-       SLIDE 2
-  ======================================================== -->
-
-  <section class="slide" id="slide2">
-
-    <div class="paper">
-
-      <div class="chapter">
-        02 / DISCORD
-      </div>
-
-      <p>
-        Bagi saya Discord itu alter account.
-        Bisa jadi apa saja, siapa saja,
-        kapan saja.
-      </p>
-
-      <p>
-        Jadi berbohong rasanya lebih mudah,
-        karena orang-orang juga berbohong.
-      </p>
-
-      <p>
-        Saya tidak bermaksud mengkhianati
-        kamu dengan sengaja kok.
-        Saya kayaknya...
-        terbawa suasana.
-      </p>
-
-      <p class="big-line">
-        <strong>
-          Eh ternyata efeknya
-          sebegitu seriusnya.
-        </strong>
-      </p>
-
-      <p>
-        Ini fakta baru juga sih bagi saya
-        bahwa si Ran itu cukup genuine
-        dan mau berusaha mengingat
-        hal-hal kecil.
-      </p>
-
-      <p>
-        Padahal ga dibayar kayanya.
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- =======================================================
-       SLIDE 3
-  ======================================================== -->
-
-  <section class="slide" id="slide3">
-
-    <div class="paper">
-
-      <div class="chapter">
-        03 / KENAPA MALAH BIKIN WEBSITE
-      </div>
-
-      <p>
-        Saya bingung mau minta maaf
-        seperti apa yang tepat.
-      </p>
-
-      <p>
-        Saya pikir lagi-lagi kayaknya
-        gacukup kalau lewat chat saja.
-      </p>
-
-      <p>
-        Dan saya juga tersiksa karena
-        gabisa kirim reels karena masih gaenak.
-      </p>
-
-      <p>
-        karena ternyata chat saja tidak cukup
-        dan saya punya terlalu banyak waktu ...
-      </p>
-
-      <p class="big-line">
-        <strong>saya coba deh.</strong>
-      </p>
-
-      <p>
-        semoga meseji-nya tersampaikan.
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- =======================================================
-       SLIDE 4
-  ======================================================== -->
-
-  <section class="slide" id="slide4">
-
-    <div class="paper">
-
-      <div class="chapter">
-        CHAPTER 01 / NGAKU LEPAT
-      </div>
-
-      <h2>Iya, saya salah.</h2>
-
-      <p>
-        <strong>Ran inget ga...</strong>
-      </p>
-
-      <p>
-        Saya pernah cerita saya baca webtoon
-        <i>Pupus Putus Sekolah</i>?
-      </p>
-
-      <p>
-        Salah satunya ada episode
-        yang bahas ketupat.
-      </p>
-
-      <div class="quote">
-        Ketupat = ngaku lepat.<br>
-        Artinya ngaku salah.
-      </div>
-
-      <p>
-        cocok sekali untuk situasi ini.
-      </p>
-
-      <p>
-        Jadi iya Ran,
-        <strong>
-          saya ngaku
-          (udah ngaku duluan kan sebenernya)
-          salah soal berbohong kepadamu
-          tentang tanggal lahir itu.
-        </strong>
-      </p>
-
-      <p>
-        Saya ga sangka kamu berusaha
-        untuk mengingatnya.
-      </p>
-
-      <p>
-        Jadi waktu kamu bilang itu...
-        saya merasa bersalah banget woy.
-      </p>
-
-      <p>
-        Mungkin di masa sebelum kenalan sungguhan,
-        ada kebohongan lain sedikit-sedikit.
-      </p>
-
-      <p>
-        Jadi saya minta maaf juga untuk itu.
-      </p>
-
-      <p>
-        Tapi saya usahakan tak ada lagi
-        informasi palsu ke depannya.
-      </p>
-
-      <p>
-        Ancamanmu cukup seram, Ran.
-      </p>
-
-      <p class="big-line">
-        <strong>Diblokir.</strong>
-      </p>
-
-      <p>
-        Bisa kalang kabut saya.
-      </p>
-
-      <div class="spacer"></div>
-
-      <p>
-        Ohya Ran, kalau kamu ada waktu kosong,
-        ini referensinya:
-      </p>
-
-      <!-- NANTI GANTI LINK -->
-      <p>
-        📎
-        <a
-          href="#"
-          target="_blank"
-        >
-          baca episode ketupat kalau tidak malas
-        </a>
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- =======================================================
-       SLIDE 5
-  ======================================================== -->
-
-  <section class="slide" id="slide5">
-
-    <div class="paper">
-
-      <div class="chapter">
-        CHAPTER 02 / RAN RAN RAN
-      </div>
-
-      <h2>Disclaimer dulu.</h2>
-
-      <p>
-        Sebetulnya chapter ini sudah saya draft
-        <strong>
-          sebelum kamu DC saya semalam.
-        </strong>
-      </p>
-
-      <p>
-        Jadi sekalian saya buat.
-      </p>
-
-      <p>
-        Ini adalah balasan untuk:
-      </p>
-
-      <p class="big-line">
-        <strong>
-          “Nama Palsunya Lintang”
-        </strong>
-      </p>
-
-      <p>
-        <i>
-          ini sih cuma hasil observasi sementara.
-          belum tentu valid,
-          tapi ini Ran dari kacamata saya.
-        </i>
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- =======================================================
-       SLIDE 6
-  ======================================================== -->
-
-  <section class="slide" id="slide6">
-
-    <div class="paper">
-
-      <div class="chapter">
-        PERTEMUAN YANG MUNGKIN
-        TIDAK PERNAH TERJADI
-      </div>
-
-      <p>
-        Saya rasa saya juga bohong soal
-        kita pernah ngobrol di Gang Desa.
-      </p>
-
-      <p>
-        Bukan bohong sih.
-      </p>
-
-      <p>
-        Lebih tepatnya saya menerka-nerka
-        bahwa kita pernah bertemu.
-      </p>
-
-      <p>
-        Saya lupa-lupa inget,
-        tapi saya cukup familiar dengan nama itu
-        dan beberapa mutual kita sama.
-      </p>
-
-      <p>
-        jadi saya lempar saja keyakinan saya.
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- =======================================================
-       SLIDE 7
-  ======================================================== -->
-
-  <section class="slide" id="slide7">
-
-    <div class="paper">
-
-      <div class="chapter">
-        PRADUGA TAK BERSALAH
-      </div>
-
-      <p>
-        Setelah keluar masuk voice,
-        ngobrol penting gppenting,
-        melihat illustrasi dan impresi online
-        yang dia buat,
-        harusnya ada sedikit pemahaman tentang
-        Ran Ran ini orangnya seperti apa.
-      </p>
-
-      <p>
-        yang saya tau ran cukup authentic,
-        yang saya notis diawal sebenarnya
-        adalah cara bicaranya,
-        kaya orang malas tapi excited.
-      </p>
-
-      <p class="tiny">
-        ini deskripsinya pokoknya.
-      </p>
-
-      <p>
-        Bakatnya banyak,
-        ngobrol, illustrasi, musik,
-        dan belakangan juga saya jadi tau
-        ran pandai menulis.
-      </p>
-
-      <p>
-        tulisannya janggal, kocak,
-        orisinil dan indah.
-      </p>
-
-      <p>
-        terus ternyata ran wavelengthnya
-        lebar banget,
-        apa aja dia omongin,
-        dan ga yang tipis tipis saja.
-      </p>
-
-      <p class="big-line">
-        Haduh.
-      </p>
-
-      <p>
-        tapi ya Ran,
-        sungguh setelah semua itu
-        saya tetap tidak tau kamu
-        aslinya orang seperti apa.
-      </p>
-
-      <p>
-        Saya terka-terka tapi gagal.
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- =======================================================
-       SLIDE 8
-  ======================================================== -->
-
-  <section class="slide" id="slide8">
-
-    <div class="paper">
-
-      <div class="chapter">
-        RAN YANG KONTRADIKTIF
-      </div>
-
-      <p>
-        Saya pikir Ran orang yang bodo amat.
-      </p>
-
-      <p>
-        dia sering banget bilang
-        <strong>
-          suka suka saya lah kocak,
-        </strong>
-        dia suka kocak kocakin orang deh pokoknya,
-        nah kak seven suka banget tuh
-        kalo kata kocak udah keluar.
-      </p>
-
-      <p>
-        Tapi ternyata ran yang kocak.
-      </p>
-
-      <p>
-        Dia ga sebodo amat itu men,
-        sedikit sedikit revisi,
-        klarifikasi, dan minta maaf.
-      </p>
-
-      <p>
-        jadi sebenernya dia empatinya tinggi,
-        cuma datangnya telat.
-      </p>
-
-      <p>
-        dan ini ciri ciri orang beriman,
-        karena dia banyak berpikir sih sepertinya.
-      </p>
-
-      <p>
-        Nah tapi dia memang orang bodoamat deh,
-        bisa tibatiba cabut begitu saja,
-        atau zoning out tiba tiba melamun
-        saat diajak bicara.
-      </p>
-
-      <p>
-        Jadi jangan pernah estimasikan
-        Ran orang seperti apa.
-      </p>
-
-      <p>
-        dia jiwanya bebas,
-        kayak tupai kali ya,
-        bisa lari lari terus tiba tiba bengong.
-      </p>
-
-      <div class="quote">
-        ini kalo saya ilustrasikan
-        ran adalah tupai gondrong
-        yang pake cerutu isinya rokok,
-        rokok cengkih.
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- =======================================================
-       SLIDE 9
-  ======================================================== -->
-
-  <section class="slide" id="slide9">
-
-    <div class="paper">
-
-      <div class="chapter">
-        OBSERVER
-      </div>
-
-      <p>
-        Ran juga pandai mengobservasi orang.
-        Kata dia, dia terbiasa membaca pola.
-      </p>
-
-      <p>
-        Untuk ini saya terpaksa setuju,
-        karena praduganya akurat,
-        menyebalkan.
-      </p>
-
-      <p>
-        saya mau balas tapi lagi lagi sulit.
-        ya karena ruang lingkupnya luas nih
-        si ran berubah kapan saja
-      </p>
-
-      <p class="big-line">
-        <strong>#sekilasinfo</strong>
-      </p>
-
-      <p>
-        saya kalau kirim reels ke orang
-        selalu diracik sedemikian rupa,
-        tapi buat ran yang tidak saya pahami ini,
-        akhirnya saya lempar asal.
-      </p>
-
-      <p>
-        reaksinya bagus,
-        atau setidaknya itu yang
-        saya interpretasikan.
-      </p>
-
-      <p>
-        secara dia sampai buat tulisan 2 halaman
-        yang saya unduh 5 kali itu.
-      </p>
-
-      <p class="big-line">
-        baru tau rasa,
-        saya balas 20 halaman nah.
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- =======================================================
-       SLIDE 10
-  ======================================================== -->
-
-  <section class="slide" id="slide10">
-
-    <div class="paper">
-
-      <div class="chapter">
-        CHAPTER 04 /
-        EFEK SAMPING KENAL RAN
-      </div>
-
-      <p class="big-line">
-        Cukup senang.
-      </p>
-
-      <p>
-        Tapi saya jadi banyak mikir
-        kalau balas pesan.
-      </p>
-
-      <p>
-        Kadang saya lempar umpan
-        sebetulnya ga pengen-pengen
-        banget direspon.
-      </p>
-
-      <p>
-        ...
-      </p>
-
-      <p>
-        <strong>(bohong)</strong>
-      </p>
-
-      <p>
-        <strong>Dan ya,</strong>
-        Ran selalu respon.
-      </p>
-
-      <p>
-        Bubblenya panjang panjang lagi.
-        Saya terpaksa harus mikir
-        feedback apa yang tepat.
-      </p>
-
-      <p>
-        Karena kalau naluriah saya
-        mungkin akan balas singkat.
-      </p>
-
-      <p>
-        Tapi saya gamau respon seperti itu
-        karena...
-        <strong>
-          gamau terlihat dangkal WKWK.
-        </strong>
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- =======================================================
-       SLIDE 11
-  ======================================================== -->
-
-  <section class="slide" id="slide11">
-
-    <div class="paper">
-
-      <div class="chapter">
-        EFEK SAMPING #2
-      </div>
-
-      <p>
-        Bertemu Ran juga membuat saya
-        membangkitkan kebiasaan menulis saya.
-      </p>
-
-      <p>
-        Ntah.
-      </p>
-
-      <p>
-        Sepertinya gaya tulisnya juga
-        sedikit banyak saya ambil.
-      </p>
-
-      <p>
-        Tapi saya naratif sekali.
-        Panjang kalau menulis,
-        dan kurang begitu indah.
-      </p>
-
-      <div class="spacer"></div>
-
-      <p class="tiny">
-        SAYANG SEKALI HARUS DIAKUI
-      </p>
-
-      <p class="big-line">
-        Rutinitas saya berubah sedikiiit...
-        gara-gara Ran?
-      </p>
-
-      <p>...</p>
-
-      <p>
-        <strong>ih malas.</strong>
-      </p>
-
-      <p>...</p>
-
-      <p>
-        tapi memang iya sih.
-      </p>
-
-      <p>
-        <strong>makasih ga ya?</strong>
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- =======================================================
-       SLIDE 12
-  ======================================================== -->
-
-  <section class="slide" id="slide12">
-
-    <div class="paper">
-
-      <div class="chapter">
-        CHAPTER 05 /
-        KEMBALI KE TUJUAN AWAL
-      </div>
-
-      <h2>Intinya.</h2>
-
-      <p>
-        Jadi inti website yang sangat
-        tidak perlu ini sebenarnya sederhana:
-      </p>
-
-      <p>
-        Minta maaf karena ga proper kemarin,
-        bukan kamu aja yang suka kepikiran,
-        saya juga.
-      </p>
-
-      <p>
-        sekalian menyampaikan hasil pengamatan
-        beberapa minggu kebelakang.
-      </p>
-
-      <div class="spacer"></div>
-
-      <p class="tiny">
-        SEKALI LAGI
-      </p>
-
-      <p>
-        Saya nggak bermaksud
-        mempermainkan kepercayaanmu.
-      </p>
-
-      <p class="big-line">
-        Tapi tetap saja cara saya
-        waktu itu nggak tepat.
-      </p>
-
-      <p>
-        Jadi sekali lagi,
-      </p>
-
-      <h2>
-        Maaf ya, Ran.
-      </h2>
-
-      <div class="spacer"></div>
-
-      <h2 class="center">
-        JADI GIMANA?
-      </h2>
-
-      <p class="center big-line">
-        saya dimaafin?
-      </p>
-
-
-      <div
-        class="forgive-area"
-        id="forgiveArea"
-      >
-
-        <button
-          class="choice"
-          id="yesBtn"
-          onclick="forgiven()"
-        >
-          Yaudah iya deh, huuhh
-        </button>
-
-
-        <button
-          class="choice"
-          id="noBtn"
-          onmouseenter="escapeButton()"
-          onclick="escapeButton()"
-          ontouchstart="escapeButton()"
-        >
-          Masih kesel
-        </button>
-
-      </div>
-
-
-      <p class="tiny center">
-        website ini menghormati
-        seluruh pilihan pengguna*
-      </p>
-
-      <p class="tiny center">
-        *syarat dan ketentuan berlaku
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- =======================================================
-       SLIDE 13
-  ======================================================== -->
-
-  <section class="slide" id="slide13">
-
-    <div class="paper center">
-
-      <h1 class="final-title">
-        YEY!
-      </h1>
-
-      <h2>
-        dimaafin :D
-      </h2>
-
-      <p class="friend-line">
-        ayo temenan sampe tuwir.
-      </p>
-
-      <p>
-        seperti kata anda ya
-      </p>
-
-      <div class="spacer"></div>
-
-      <p>
-        Nah, setelah ini boleh ya
-        saya kirim kirim reels
-        atau <strong>#pamer</strong>
-        atau <strong>#sekilasinfo</strong>?
-      </p>
-
-      <p>
-        saya juga masih nunggu sesi
-        membaca menulis bercerita
-        main catur sambung lagu
-        dan life update random lainnya
-      </p>
-
-      <div class="spacer"></div>
-
-      <p>
-        Sekian ketupat digital.
-      </p>
-
-      <p>
-        Tidak bisa dimakan.
-      </p>
-
-      <p>
-        Sayang sekali.
-      </p>
-
-      <p style="font-size:40px;">
-        🐦
-      </p>
-
-      <button
-        class="nav-button"
-        onclick="goTo(0)"
-      >
-        balik ke awal
-      </button>
-
-    </div>
-
-  </section>
-
-
-  <!-- =======================================================
-       GLOBAL NAV
-  ======================================================== -->
+  <!-- =====================================================
+       BIRDS
+  ====================================================== -->
+
+  <div class="edge-bird edge-top">🐦</div>
+  <div class="edge-bird edge-bottom">🕊️</div>
+  <div class="edge-bird edge-left">🐤</div>
+  <div class="edge-bird edge-right">🐦</div>
+
+
+  <!-- =====================================================
+       MUSIC REMINDER
+  ====================================================== -->
 
   <div
-    class="nav"
-    id="nav"
+    class="music-reminder"
+    id="musicReminder"
   >
 
+    🎧 setel lagu dulu yuk
+
     <button
-      class="nav-button hidden"
+      id="musicBtn"
+      onclick="toggleMusic()"
+    >
+      ▶
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
+       KETUPAT TRANSITION
+  ====================================================== -->
+
+  <div
+    class="ketupat-transition"
+    id="ketupatTransition"
+  ></div>
+
+
+  <!-- =====================================================
+       SLIDE 0
+  ====================================================== -->
+
+  <section
+    class="slide active"
+    id="slide0"
+  >
+
+    <div class="cover-wrap">
+
+      <div class="cover-paper">
+
+        <span class="corner-sticker corner-a">
+          ⭐
+        </span>
+
+        <span class="corner-sticker corner-b">
+          🌿
+        </span>
+
+        <div class="small">
+          ketupat_for_Ran.exe
+        </div>
+
+        <h1>
+          ketupat<br>
+          untuk Ran
+        </h1>
+
+        <div class="cover-note">
+          sebuah website yang sebetulnya<br>
+          tidak perlu dibuat sejauh ini
+        </div>
+
+
+        <div
+          class="ketupat"
+          onclick="openKetupat()"
+        >
+
+          <div class="ketupat-body"></div>
+
+          <div class="ketupat-tail"></div>
+
+        </div>
+
+
+        <div class="small">
+          klik ketupatnya,<br>
+          ga ada malware kok 🙂
+        </div>
+
+      </div>
+
+
+      <!-- MEME COVER KIRI -->
+
+      <div
+        class="polaroid"
+        style="
+          position:absolute;
+          width:160px;
+          left:0;
+          top:80px;
+          transform:rotate(-7deg);
+        "
+      >
+
+        <div class="image-slot">
+          MEME / FOTO<br>
+          COVER #1
+        </div>
+
+        <div class="caption">
+          dokumentasi tidak penting
+        </div>
+
+      </div>
+
+
+      <!-- MEME COVER KANAN -->
+
+      <div
+        class="polaroid"
+        style="
+          position:absolute;
+          width:160px;
+          right:0;
+          bottom:55px;
+          transform:rotate(6deg);
+        "
+      >
+
+        <div class="image-slot">
+          MEME / FOTO<br>
+          COVER #2
+        </div>
+
+        <div class="caption">
+          untuk estetika
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       SLIDE 1
+  ====================================================== -->
+
+  <section
+    class="slide"
+    id="slide1"
+  >
+
+    <div class="scrap bg-pink">
+
+      <div class="content">
+
+        <div class="chapter tag-yellow">
+          halo, Ran
+        </div>
+
+        <h2>
+          Halo Ran,
+        </h2>
+
+        <p>
+          Saya sampai hari ini masih kepikiran
+          soal protes Anda kemarin.
+        </p>
+
+        <p>
+          Sejujurnya saya agak kaget karena
+          kesalahan saya itu saya hampir
+          diblok oleh Ran.
+        </p>
+
+        <p>
+          Untung Anda ngomong.
+        </p>
+
+        <p>
+          Saya respect sih karena
+          <i>letting me know</i>
+          dan tidak mengghosting tiba-tiba.
+        </p>
+
+      </div>
+
+
+      <div class="visual-column">
+
+        <div class="polaroid">
+
+          <div class="image-slot">
+            TEMPAT MEME
+            <br><br>
+            reaksi saya
+            waktu hampir
+            diblok
+          </div>
+
+          <div class="caption">
+            dramatic reconstruction
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       SLIDE 2
+  ====================================================== -->
+
+  <section
+    class="slide"
+    id="slide2"
+  >
+
+    <div class="scrap bg-blue">
+
+      <div class="content">
+
+        <div class="chapter tag-blue">
+          sedikit perkara Discord
+        </div>
+
+        <p>
+          Bagi saya Discord itu alter account.
+          Bisa jadi apa saja, siapa saja,
+          kapan saja.
+        </p>
+
+        <p>
+          Jadi berbohong rasanya lebih mudah,
+          karena orang-orang juga berbohong.
+        </p>
+
+        <p>
+          Saya tidak bermaksud mengkhianati
+          Anda dengan sengaja kok.
+          Saya kayaknya...
+          terbawa suasana.
+        </p>
+
+        <p class="big">
+          <strong>
+            Eh ternyata efeknya
+            sebegitu seriusnya.
+          </strong>
+        </p>
+
+        <p>
+          Ini fakta baru juga sih bagi saya
+          bahwa si Ran itu cukup genuine
+          dan mau berusaha mengingat
+          hal-hal kecil,
+          padahal ga dibayar kayanya.
+        </p>
+
+      </div>
+
+
+      <div class="visual-column">
+
+        <div class="polaroid">
+
+          <div class="image-slot">
+            GAMBAR
+            DISCORD /
+            DOODLE
+          </div>
+
+          <div class="caption">
+            alter account department
+          </div>
+
+        </div>
+
+
+        <div class="polaroid">
+
+          <div class="image-slot landscape">
+            MEME
+            YANG RELEVAN
+          </div>
+
+          <div class="caption">
+            optional evidence
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       SLIDE 3
+  ====================================================== -->
+
+  <section
+    class="slide"
+    id="slide3"
+  >
+
+    <div class="scrap bg-green">
+
+      <div class="content">
+
+        <div class="chapter tag-green">
+          kok malah jadi website
+        </div>
+
+        <p>
+          Saya bingung mau minta maaf
+          seperti apa yang tepat.
+        </p>
+
+        <p class="big">
+          <strong>
+            Saya pikir lagi-lagi kayaknya
+            gacukup kalau lewat chat saja.
+          </strong>
+        </p>
+
+        <p>
+          Dan saya juga tersiksa karena
+          gabisa kirim reels karena masih gaenak.
+        </p>
+
+        <p>
+          Karena ternyata chat saja tidak cukup
+          dan saya punya terlalu banyak waktu...
+        </p>
+
+        <p class="big">
+          <strong>
+            saya coba deh.
+          </strong>
+        </p>
+
+        <p>
+          semoga meseji-nya tersampaikan.
+        </p>
+
+      </div>
+
+
+      <div class="visual-column">
+
+        <div class="polaroid">
+
+          <div class="image-slot">
+            TEMPAT MEME
+            <br><br>
+            terlalu banyak
+            waktu
+          </div>
+
+          <div class="caption">
+            kegiatan NVA
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       SLIDE 4
+  ====================================================== -->
+
+  <section
+    class="slide"
+    id="slide4"
+  >
+
+    <div class="scrap bg-yellow">
+
+      <div class="content">
+
+        <div class="chapter tag-yellow">
+          bab satu — ngaku lepat
+        </div>
+
+        <h2>
+          Iya, saya salah.
+        </h2>
+
+        <p>
+          <strong>
+            Ran inget ga...
+          </strong>
+        </p>
+
+        <p>
+          Saya pernah cerita saya baca webtoon
+          <i>Pupus Putus Sekolah</i>?
+        </p>
+
+        <p>
+          Salah satunya ada episode
+          yang bahas ketupat.
+        </p>
+
+        <div class="quote">
+          <strong>
+            Ketupat = ngaku lepat.
+          </strong>
+
+          <br>
+
+          Artinya ngaku salah.
+        </div>
+
+        <p>
+          cocok sekali untuk situasi ini.
+        </p>
+
+        <p>
+          Jadi iya Ran,
+          <strong>
+            saya ngaku
+            (udah ngaku duluan kan sebenernya)
+            salah soal berbohong kepada Anda
+            tentang tanggal lahir itu.
+          </strong>
+        </p>
+
+        <p>
+          Saya ga sangka Anda berusaha
+          untuk mengingatnya.
+        </p>
+
+        <p>
+          Jadi waktu Anda bilang itu...
+          saya merasa bersalah banget woy.
+        </p>
+
+        <p>
+          Mungkin di masa sebelum kenalan sungguhan,
+          ada kebohongan lain sedikit-sedikit.
+        </p>
+
+        <p>
+          Jadi saya minta maaf juga untuk itu.
+        </p>
+
+        <p>
+          Tapi saya usahakan tak ada lagi
+          informasi palsu ke depannya.
+        </p>
+
+        <p>
+          Ancaman Anda cukup seram, Ran.
+        </p>
+
+        <p class="big">
+          <strong>
+            Diblokir.
+          </strong>
+        </p>
+
+        <p>
+          Bisa kalang kabut saya.
+        </p>
+
+        <p>
+          Ohya Ran,
+          kalau Anda ada waktu kosong,
+          ini referensinya:
+        </p>
+
+        <p>
+          📎
+          <a
+            href="#"
+            target="_blank"
+          >
+            baca episode ketupat kalau tidak malas
+          </a>
+        </p>
+
+      </div>
+
+
+      <div class="visual-column">
+
+        <div class="polaroid">
+
+          <div class="image-slot">
+            SCREENSHOT
+            EPISODE
+            KETUPAT
+          </div>
+
+          <div class="caption">
+            referensi ilmiah
+          </div>
+
+        </div>
+
+
+        <div class="polaroid">
+
+          <div class="image-slot">
+            MEME
+            NGAKU SALAH
+          </div>
+
+          <div class="caption">
+            barang bukti tambahan
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       SLIDE 5
+  ====================================================== -->
+
+  <section
+    class="slide"
+    id="slide5"
+  >
+
+    <div class="scrap bg-purple">
+
+      <div class="content">
+
+        <div class="chapter tag-purple">
+          bab dua — Ran Ran Ran
+        </div>
+
+        <h2>
+          disclaimer dulu.
+        </h2>
+
+        <p>
+          Sebetulnya chapter ini sudah saya draft
+          <strong>
+            sebelum Anda DC saya semalam.
+          </strong>
+        </p>
+
+        <p>
+          Jadi sekalian saya buat.
+        </p>
+
+        <p>
+          Ini adalah balasan untuk:
+        </p>
+
+        <p class="big">
+          <strong>
+            “Nama Palsunya Lintang”
+          </strong>
+        </p>
+
+        <p>
+          <i>
+            ini sih cuma hasil observasi sementara.
+            belum tentu valid,
+            tapi ini Ran dari kacamata saya.
+          </i>
+        </p>
+
+      </div>
+
+
+      <div class="visual-column">
+
+        <div class="polaroid">
+
+          <div class="image-slot">
+            SCREENSHOT
+            <br><br>
+            NAMA PALSUNYA
+            LINTANG
+          </div>
+
+          <div class="caption">
+            barang bukti 2 halaman
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       SLIDE 6
+  ====================================================== -->
+
+  <section
+    class="slide"
+    id="slide6"
+  >
+
+    <div class="scrap bg-blue">
+
+      <div class="content">
+
+        <div class="chapter tag-green">
+          sebuah pertemuan yang mungkin tidak pernah terjadi
+        </div>
+
+        <p>
+          Saya rasa saya juga bohong soal
+          kita pernah ngobrol di Gang Desa.
+        </p>
+
+        <p>
+          Bukan bohong sih.
+        </p>
+
+        <p>
+          Lebih tepatnya saya menerka-nerka
+          bahwa kita pernah bertemu.
+        </p>
+
+        <p>
+          Saya lupa-lupa inget,
+          tapi saya cukup familiar dengan nama itu
+          dan beberapa mutual kita sama.
+        </p>
+
+        <p>
+          jadi saya lempar saja keyakinan saya.
+        </p>
+
+      </div>
+
+
+      <div class="visual-column">
+
+        <div class="polaroid">
+
+          <div class="image-slot">
+            GAMBAR
+            JALAN /
+            GANG DESA
+          </div>
+
+          <div class="caption">
+            lokasi kejadian belum terverifikasi
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       SLIDE 7
+  ====================================================== -->
+
+  <section
+    class="slide"
+    id="slide7"
+  >
+
+    <div class="scrap bg-pink">
+
+      <div class="content">
+
+        <div class="chapter tag-pink">
+          hasil observasi sementara
+        </div>
+
+        <p>
+          Setelah keluar masuk voice,
+          ngobrol penting gppenting,
+          melihat ilustrasi dan impresi online
+          yang dia buat,
+          harusnya ada sedikit pemahaman
+          tentang Ran Ran ini orangnya seperti apa.
+        </p>
+
+        <p>
+          Yang saya tau Ran cukup authentic.
+          Yang saya notis di awal sebenarnya
+          adalah cara bicaranya,
+          kaya orang malas tapi excited.
+          Ini deskripsinya pokoknya.
+        </p>
+
+        <p>
+          Bakatnya banyak,
+          ngobrol, ilustrasi, musik,
+          dan belakangan juga saya jadi tau
+          Ran pandai menulis.
+        </p>
+
+        <p>
+          Tulisannya janggal,
+          kocak,
+          orisinil dan indah.
+        </p>
+
+        <p>
+          Terus ternyata Ran wavelength-nya
+          lebar banget,
+          apa aja dia omongin,
+          dan ga yang tipis-tipis saja.
+        </p>
+
+        <p class="big">
+          Haduh.
+        </p>
+
+        <p>
+          Tapi ya Ran,
+          sungguh setelah semua itu
+          saya tetap tidak tau
+          Anda aslinya orang seperti apa.
+        </p>
+
+        <p>
+          Saya terka-terka tapi gagal.
+        </p>
+
+      </div>
+
+
+      <div class="visual-column">
+
+        <div class="polaroid">
+
+          <div class="image-slot">
+            MEME /
+            FOTO /
+            ILUSTRASI
+          </div>
+
+          <div class="caption">
+            hasil observasi tidak peer-reviewed
+          </div>
+
+        </div>
+
+
+        <div class="note">
+          bakat:
+          ngobrol,
+          ilustrasi,
+          musik,
+          menulis,
+          dll dll
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       SLIDE 8
+  ====================================================== -->
+
+  <section
+    class="slide"
+    id="slide8"
+  >
+
+    <div class="scrap bg-yellow">
+
+      <div class="content">
+
+        <div class="chapter tag-pink">
+          kontradiksi berjalan
+        </div>
+
+        <p>
+          Saya pikir Ran orang yang bodo amat.
+        </p>
+
+        <p>
+          Dia sering banget bilang
+          <strong>
+            suka suka saya lah kocak
+          </strong>,
+          dia suka kocak-kocakin orang deh pokoknya,
+          nah Kak Seven suka banget tuh
+          kalau kata kocak udah keluar.
+        </p>
+
+        <p>
+          Tapi ternyata Ran yang kocak.
+        </p>
+
+        <p>
+          Dia ga sebodo amat itu men,
+          sedikit-sedikit revisi,
+          klarifikasi,
+          dan minta maaf.
+        </p>
+
+        <p>
+          Jadi sebenernya dia empatinya tinggi,
+          cuma datangnya telat.
+          Dan ini ciri-ciri orang beriman,
+          karena dia banyak berpikir sih sepertinya.
+        </p>
+
+        <p>
+          Nah tapi dia memang orang bodo amat deh,
+          bisa tiba-tiba cabut begitu saja,
+          atau zoning out tiba-tiba melamun
+          saat diajak bicara.
+        </p>
+
+        <p>
+          Jadi jangan pernah estimasikan
+          Ran orang seperti apa.
+        </p>
+
+        <p>
+          Dia jiwanya bebas,
+          kayak tupai kali ya,
+          bisa lari-lari terus tiba-tiba bengong.
+        </p>
+
+        <div class="quote">
+          ini kalau saya ilustrasikan
+          Ran adalah tupai gondrong
+          yang pake cerutu isinya rokok,
+          rokok cengkih.
+        </div>
+
+      </div>
+
+
+      <div class="visual-column">
+
+        <div class="polaroid">
+
+          <div class="image-slot">
+            WAJIB:
+            <br><br>
+            TUPAI
+            GONDRONG
+            + CERUTU
+          </div>
+
+          <div class="caption">
+            visualisasi ilmiah Ran
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       SLIDE 9
+  ====================================================== -->
+
+  <section
+    class="slide"
+    id="slide9"
+  >
+
+    <div class="scrap bg-green">
+
+      <div class="content">
+
+        <div class="chapter tag-yellow">
+          observer + #sekilasinfo
+        </div>
+
+        <p>
+          Ran juga pandai mengobservasi orang.
+          Kata dia,
+          dia terbiasa membaca pola.
+        </p>
+
+        <p>
+          Untuk ini saya terpaksa setuju,
+          karena praduganya akurat,
+          menyebalkan.
+        </p>
+
+        <p>
+          Saya mau balas tapi lagi-lagi sulit.
+          Ya karena ruang lingkupnya luas nih si Ran,
+          berubah kapan saja.
+        </p>
+
+        <p class="big">
+          <strong>
+            #sekilasinfo
+          </strong>
+        </p>
+
+        <p>
+          Saya kalau kirim reels ke orang
+          selalu diracik sedemikian rupa,
+          tapi buat Ran yang tidak saya pahami ini,
+          akhirnya saya lempar asal.
+        </p>
+
+        <p>
+          Reaksinya bagus,
+          atau setidaknya itu yang saya interpretasikan.
+        </p>
+
+        <p>
+          Secara dia sampai buat tulisan 2 halaman
+          yang saya unduh 5 kali itu.
+        </p>
+
+        <p class="big">
+          baru tau rasa,
+          saya balas 20 halaman nah.
+        </p>
+
+      </div>
+
+
+      <div class="visual-column">
+
+        <div class="polaroid">
+
+          <div class="image-slot">
+            SCREENSHOT
+            REELS /
+            MEME
+          </div>
+
+          <div class="caption">
+            hasil cek ombak
+          </div>
+
+        </div>
+
+
+        <div class="polaroid">
+
+          <div class="image-slot landscape">
+            SCREENSHOT
+            TULISAN
+            2 HALAMAN
+          </div>
+
+          <div class="caption">
+            downloaded x5
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       SLIDE 10
+  ====================================================== -->
+
+  <section
+    class="slide"
+    id="slide10"
+  >
+
+    <div class="scrap bg-blue">
+
+      <div class="content">
+
+        <div class="chapter tag-blue">
+          bab tiga — efek samping kenal Ran
+        </div>
+
+        <p class="big">
+          Cukup senang.
+        </p>
+
+        <p>
+          Tapi saya jadi banyak mikir
+          kalau balas pesan.
+        </p>
+
+        <p>
+          Kadang saya lempar umpan
+          sebetulnya ga pengen-pengen
+          banget direspon.
+        </p>
+
+        <p>
+          ...
+        </p>
+
+        <p>
+          <strong>
+            (bohong)
+          </strong>
+        </p>
+
+        <p>
+          <strong>
+            Dan ya,
+          </strong>
+          Ran selalu respon.
+        </p>
+
+        <p>
+          Bubblenya panjang-panjang lagi.
+          Saya terpaksa harus mikir
+          feedback apa yang tepat.
+        </p>
+
+        <p>
+          Karena kalau naluriah saya
+          mungkin akan balas singkat.
+        </p>
+
+        <p>
+          Tapi saya gamau respon seperti itu karena...
+          <strong>
+            gamau terlihat dangkal WKWK.
+          </strong>
+        </p>
+
+      </div>
+
+
+      <div class="visual-column">
+
+        <div class="polaroid">
+
+          <div class="image-slot">
+            MEME
+            ORANG
+            MIKIR KERAS
+          </div>
+
+          <div class="caption">
+            CPU usage 98%
+          </div>
+
+        </div>
+
+
+        <div class="polaroid">
+
+          <div class="image-slot landscape">
+            CHAT BUBBLE
+            PANJANG
+            PANJANG
+          </div>
+
+          <div class="caption">
+            bukti beban kognitif
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       SLIDE 11
+  ====================================================== -->
+
+  <section
+    class="slide"
+    id="slide11"
+  >
+
+    <div class="scrap bg-purple">
+
+      <div class="content">
+
+        <div class="chapter tag-purple">
+          efek samping lanjutan
+        </div>
+
+        <p>
+          Bertemu Ran juga membuat saya
+          membangkitkan kebiasaan menulis saya.
+        </p>
+
+        <p>
+          Ntah.
+        </p>
+
+        <p>
+          Sepertinya gaya tulisnya juga
+          sedikit banyak saya ambil.
+        </p>
+
+        <p>
+          Tapi saya naratif sekali.
+          Panjang kalau menulis,
+          dan kurang begitu indah.
+        </p>
+
+        <p class="small">
+          SAYANG SEKALI HARUS DIAKUI
+        </p>
+
+        <p class="big">
+          Rutinitas saya berubah sedikiiit...
+          gara-gara Ran?
+        </p>
+
+        <p>
+          ...
+        </p>
+
+        <p>
+          <strong>
+            ih malas.
+          </strong>
+        </p>
+
+        <p>
+          ...
+        </p>
+
+        <p>
+          tapi memang iya sih.
+        </p>
+
+        <p>
+          <strong>
+            makasih ga ya?
+          </strong>
+        </p>
+
+      </div>
+
+
+      <div class="visual-column">
+
+        <div class="polaroid">
+
+          <div class="image-slot">
+            MEME /
+            GAMBAR
+            MENULIS
+          </div>
+
+          <div class="caption">
+            adverse effect
+          </div>
+
+        </div>
+
+
+        <div class="polaroid">
+
+          <div class="image-slot landscape">
+            OPTIONAL
+            RANDOM
+            PIC
+          </div>
+
+          <div class="caption">
+            supaya tidak serius-serius amat
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       SLIDE 12
+  ====================================================== -->
+
+  <section
+    class="slide"
+    id="slide12"
+  >
+
+    <div class="scrap bg-green">
+
+      <div class="content">
+
+        <div class="chapter tag-green">
+          bab terakhir — kembali ke tujuan awal
+        </div>
+
+        <h2>
+          Intinya.
+        </h2>
+
+        <p>
+          Jadi inti website yang sangat
+          tidak perlu ini sebenarnya sederhana:
+        </p>
+
+        <p>
+          Minta maaf karena ga proper kemarin,
+          bukan Anda aja yang suka kepikiran,
+          saya juga.
+        </p>
+
+        <p>
+          Sekalian menyampaikan hasil pengamatan
+          beberapa minggu ke belakang.
+        </p>
+
+        <p class="small">
+          SEKALI LAGI
+        </p>
+
+        <p>
+          Saya nggak bermaksud
+          mempermainkan kepercayaan Anda.
+        </p>
+
+        <p class="big">
+          <strong>
+            Tapi tetap saja cara saya
+            waktu itu nggak tepat.
+          </strong>
+        </p>
+
+        <p>
+          Jadi sekali lagi,
+        </p>
+
+        <h2>
+          Maaf ya, Ran.
+        </h2>
+
+
+        <div class="forgive-box">
+
+          <div class="forgive-question">
+
+            <h2 class="center">
+              JADI GIMANA?
+            </h2>
+
+            <p class="center big">
+              saya dimaafin?
+            </p>
+
+
+            <div
+              class="forgive-area"
+              id="forgiveArea"
+            >
+
+              <button
+                class="choice"
+                id="yesBtn"
+                onclick="forgiven()"
+              >
+                Yaudah iya deh, huuhh
+              </button>
+
+
+              <button
+                class="choice"
+                id="noBtn"
+                onmouseenter="escapeButton()"
+                onclick="escapeButton()"
+                ontouchstart="escapeButton()"
+              >
+                Masih kesel
+              </button>
+
+            </div>
+
+
+            <p class="small center">
+              website ini menghormati
+              seluruh pilihan pengguna*
+            </p>
+
+            <p class="small center">
+              *syarat dan ketentuan berlaku
+            </p>
+
+          </div>
+
+
+          <div>
+
+            <div
+              class="no-commentary"
+              id="noCommentary"
+            >
+              tombol ini konon bisa dipilih
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="visual-column">
+
+        <div class="polaroid">
+
+          <div class="image-slot">
+            MEME
+            PERMOHONAN
+            MAAF
+          </div>
+
+          <div class="caption">
+            pressure tambahan
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       SLIDE 13
+  ====================================================== -->
+
+  <section
+    class="slide"
+    id="slide13"
+  >
+
+    <div class="scrap bg-purple">
+
+      <div class="content">
+
+        <div class="chapter tag-green">
+          yey! apparently dimaafin
+        </div>
+
+        <h1>
+          YEY!
+        </h1>
+
+        <h2>
+          dimaafin :D
+        </h2>
+
+        <p class="big">
+          <strong>
+            ayo temenan sampe tuwir.
+          </strong>
+        </p>
+
+        <p>
+          seperti kata Anda ya
+        </p>
+
+        <p>
+          Nah,
+          setelah ini boleh ya saya kirim-kirim reels
+          atau
+          <strong>#pamer</strong>
+          atau
+          <strong>#sekilasinfo</strong>?
+        </p>
+
+        <p>
+          Saya juga masih nunggu sesi
+          membaca,
+          menulis,
+          bercerita,
+          main catur,
+          sambung lagu
+          dan life update random lainnya.
+        </p>
+
+        <p>
+          Sekian ketupat digital.
+        </p>
+
+        <p>
+          Tidak bisa dimakan.
+        </p>
+
+        <p>
+          Sayang sekali.
+        </p>
+
+        <p style="font-size:40px">
+          🐦
+        </p>
+
+
+        <button
+          class="nav-btn"
+          onclick="goTo(0)"
+        >
+          balik ke awal
+        </button>
+
+      </div>
+
+
+      <div class="visual-column">
+
+        <div class="polaroid">
+
+          <div class="image-slot">
+            MEME /
+            GAMBAR
+            SELEBRASI
+          </div>
+
+          <div class="caption">
+            friendship restored apparently
+          </div>
+
+        </div>
+
+
+        <div class="polaroid">
+
+          <div class="image-slot landscape">
+            FOTO /
+            MEME RANDOM
+            TERAKHIR
+          </div>
+
+          <div class="caption">
+            post-credit scene
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       NAV
+  ====================================================== -->
+
+  <div class="nav">
+
+    <button
+      class="nav-btn hidden"
       id="backBtn"
       onclick="previousSlide()"
     >
       ← kembali
     </button>
+
 
     <div
       class="counter"
@@ -1738,8 +2892,9 @@
       0 / 13
     </div>
 
+
     <button
-      class="nav-button hidden"
+      class="nav-btn hidden"
       id="nextBtn"
       onclick="nextSlide()"
     >
@@ -1749,550 +2904,885 @@
   </div>
 
 
-  <!-- =======================================================
-       MUSIC
-  ======================================================== -->
-
-  <div class="music">
-
-    <button
-      id="musicBtn"
-      onclick="toggleMusic()"
-    >
-      ▶
-    </button>
-
-    <span>
-      soundtrack ketupat
-    </span>
-
-  </div>
-
-
-  <!--
-    NANTI KALAU DI GITHUB:
-    assets/music/lagu.mp3
-  -->
+  <!-- =====================================================
+       AUDIO
+  ====================================================== -->
 
   <audio
     id="music"
     loop
   >
 
+    <!--
+    NANTI GANTI:
+
     <source
-      src=""
+      src="assets/music/lagu.mp3"
       type="audio/mpeg"
     >
+    -->
 
   </audio>
-
 
 </div>
 
 
 <script>
 
-  /* =========================================================
-     SLIDES
-  ========================================================= */
+/* =========================================================
+   SLIDES
+========================================================= */
 
-  let currentSlide = 0;
+let currentSlide = 0;
 
-  const LAST_SLIDE = 13;
+const LAST_SLIDE = 13;
 
-  let hasBeenForgiven = false;
-
-
-  function goTo(number) {
-
-    if (
-      number < 0 ||
-      number > LAST_SLIDE
-    ) {
-      return;
-    }
+let forgivenState = false;
 
 
-    document
-      .querySelectorAll(".slide")
-      .forEach(slide => {
+function goTo(number){
 
-        slide.classList.remove("active");
+  if(
+    number < 0 ||
+    number > LAST_SLIDE
+  ){
+    return;
+  }
 
-      });
+
+  document
+    .querySelectorAll(".slide")
+    .forEach(function(slide){
+
+      slide.classList.remove(
+        "active"
+      );
+
+    });
 
 
-    document
-      .getElementById(
-        "slide" + number
+  document
+    .getElementById(
+      "slide" + number
+    )
+    .classList.add(
+      "active"
+    );
+
+
+  currentSlide =
+    number;
+
+
+  updateNav();
+
+}
+
+
+/* =========================================================
+   OPEN KETUPAT
+========================================================= */
+
+function openKetupat(){
+
+  const transition =
+    document.getElementById(
+      "ketupatTransition"
+    );
+
+
+  transition.classList.remove(
+    "open"
+  );
+
+
+  void transition.offsetWidth;
+
+
+  transition.classList.add(
+    "open"
+  );
+
+
+  setTimeout(
+    function(){
+
+      goTo(1);
+
+    },
+    390
+  );
+
+}
+
+
+/* =========================================================
+   NEXT / BACK
+========================================================= */
+
+function nextSlide(){
+
+  if(
+    currentSlide === 12 &&
+    !forgivenState
+  ){
+
+    return;
+
+  }
+
+
+  if(
+    currentSlide <
+    LAST_SLIDE
+  ){
+
+    goTo(
+      currentSlide + 1
+    );
+
+  }
+
+}
+
+
+function previousSlide(){
+
+  if(
+    currentSlide > 0
+  ){
+
+    goTo(
+      currentSlide - 1
+    );
+
+  }
+
+}
+
+
+function updateNav(){
+
+  const back =
+    document.getElementById(
+      "backBtn"
+    );
+
+  const next =
+    document.getElementById(
+      "nextBtn"
+    );
+
+  const counter =
+    document.getElementById(
+      "counter"
+    );
+
+
+  counter.innerText =
+    currentSlide +
+    " / " +
+    LAST_SLIDE;
+
+
+  back.classList.toggle(
+    "hidden",
+    currentSlide === 0
+  );
+
+
+  next.classList.toggle(
+    "hidden",
+
+    currentSlide === 0 ||
+    currentSlide === 12 ||
+    currentSlide === 13
+  );
+
+}
+
+
+/* =========================================================
+   INFINITE RUNAWAY BUTTON
+========================================================= */
+
+let escapeCount = 0;
+
+
+const noTexts = [
+
+  "Masih kesel",
+
+  "eh",
+
+  "yakin?",
+
+  "Ran plis",
+
+  "kok dikejar",
+
+  "ga boleh",
+
+  "coba tombol satunya",
+
+  "huuhhh",
+
+  "sungguh?",
+
+  "pikir lagi deh",
+
+  "engga dulu",
+
+  "opsi ini sedang cuti",
+
+  "maaf tombol rusak",
+
+  "jangan maksa",
+
+  "kok masih dicoba",
+
+  "Anda gigih juga",
+
+  "saya mulai takut",
+
+  "belum bisa",
+
+  "tetap tidak bisa",
+
+  "salah tombol Ran",
+
+  "yang hijau tuh",
+
+  "itu loh yang kiri",
+
+  "kok malah ini",
+
+  "plis cooperate",
+
+  "sistem menolak",
+
+  "request ditolak",
+
+  "akses tidak diberikan",
+
+  "error 403: forgiveness required",
+
+  "coba besok",
+
+  "eh jangan besok juga",
+
+  "sekarang aja maafin",
+
+  "ayo lah",
+
+  "masa masih kesel",
+
+  "ketupatnya sedih",
+
+  "burungnya juga sedih",
+
+  "saya juga jadi sedih",
+
+  "dramatis sekali ya",
+
+  "tapi tetap ga bisa",
+
+  "anda tidak akan menang",
+
+  "ini infinite loop",
+
+  "serius infinite",
+
+  "masih mau ngejar?",
+
+  "capek ga?",
+
+  "saya sih engga",
+
+  "JavaScript masih kuat",
+
+  "server masih sehat",
+
+  "GitHub juga sehat",
+
+  "Ran yang mulai tidak sehat",
+
+  "maaf bercanda",
+
+  "balik ke tombol hijau",
+
+  "yaudah iya aja",
+
+  "susah amat",
+
+  "cukup",
+
+  "belum cukup ternyata",
+
+  "masih ada",
+
+  "panjang sekali ya",
+
+  "saya sudah bilang",
+
+  "tidak akan habis",
+
+  "hehe",
+
+  "hahay",
+
+  "coba lagi",
+
+  "lagi?",
+
+  "lagi dong",
+
+  "tetap engga",
+
+  "NO",
+
+  "tidak",
+
+  "ora iso",
+
+  "nggak tersedia",
+
+  "fitur dicabut",
+
+  "developer menolak",
+
+  "QA reject",
+
+  "hasil verifikasi: FAIL",
+
+  "acceptance criteria: tidak memenuhi",
+
+  "CAPA diperlukan",
+
+  "root cause: masih kesel",
+
+  "mitigasi: klik tombol hijau",
+
+  "recommended action: maafin",
+
+  "close issue dulu",
+
+  "issue belum closed",
+
+  "status: open",
+
+  "status: masih open",
+
+  "status: kok open terus",
+
+  "escalate ke management",
+
+  "management bilang maafin",
+
+  "sekian",
+
+  "eh belum",
+
+  "masih lanjut",
+
+  "terima kasih atas usahanya",
+
+  "namun tetap tidak bisa",
+
+  "silakan coba opsi lain",
+
+  "opsi lain cuma satu",
+
+  "Anda tau yang mana",
+
+  "iya itu",
+
+  "yang hijau",
+
+  "klik",
+
+  "sana",
+
+  "ayo",
+
+  "please",
+
+  "plis banget",
+
+  "Ran.",
+
+  "Ran..",
+
+  "Ran...",
+
+  "tolonglah",
+
+  "ketupat sudah lelah",
+
+  "saya juga",
+
+  "tapi JavaScript belum",
+
+  "masih jalan",
+
+  "akan jalan selamanya"
+
+];
+
+
+const commentaryTexts = [
+
+  "tombol ini katanya demokratis",
+
+  "katanya.",
+
+  "Anda benar-benar mencoba opsi ini.",
+
+  "menarik.",
+
+  "percobaan tercatat.",
+
+  "hasil: gagal.",
+
+  "silakan lakukan RCA.",
+
+  "root cause mungkin karena tombolnya kabur.",
+
+  "corrective action tersedia di sebelah kiri.",
+
+  "tidak semua pilihan harus tersedia ternyata.",
+
+  "websitenya punya agenda sendiri.",
+
+  "developer bias.",
+
+  "conflict of interest detected.",
+
+  "user autonomy sedikit dikurangi.",
+
+  "demokrasi sedang maintenance.",
+
+  "harap maklum.",
+
+  "ini bukan bug.",
+
+  "ini fitur.",
+
+  "feature by design.",
+
+  "mohon tidak diaudit.",
+
+  "terima kasih."
+
+];
+
+
+function randomInfiniteText(){
+
+  const openings = [
+    "masih",
+    "tetap",
+    "kayaknya",
+    "sepertinya",
+    "maaf",
+    "sayang sekali",
+    "anehnya",
+    "secara mengejutkan",
+    "hasil evaluasi:"
+  ];
+
+
+  const middles = [
+    "opsi ini",
+    "tombol ini",
+    "pilihan ini",
+    "keputusan ini",
+    "sistem ini",
+    "ketupat ini",
+    "website ini"
+  ];
+
+
+  const endings = [
+    "tidak tersedia",
+    "menolak bekerja",
+    "sedang kabur",
+    "belum bisa dipilih",
+    "tidak kooperatif",
+    "tidak mau disentuh",
+    "masih maintenance",
+    "minta Anda pilih yang hijau",
+    "punya kehendak sendiri",
+    "tidak punya niat membantu"
+  ];
+
+
+  return (
+    openings[
+      Math.floor(
+        Math.random() *
+        openings.length
       )
-      .classList.add("active");
+    ] +
+    " " +
+    middles[
+      Math.floor(
+        Math.random() *
+        middles.length
+      )
+    ] +
+    " " +
+    endings[
+      Math.floor(
+        Math.random() *
+        endings.length
+      )
+    ]
+  );
+
+}
 
 
-    currentSlide = number;
+function escapeButton(){
 
-    updateNavigation();
-
-  }
+  escapeCount++;
 
 
-  function nextSlide() {
-
-    /*
-      Slide 12 tidak boleh lanjut
-      kecuali dimaafin.
-    */
-
-    if (
-      currentSlide === 12 &&
-      !hasBeenForgiven
-    ) {
-      return;
-    }
-
-
-    if (
-      currentSlide < LAST_SLIDE
-    ) {
-
-      goTo(
-        currentSlide + 1
-      );
-
-    }
-
-  }
-
-
-  function previousSlide() {
-
-    if (
-      currentSlide > 0
-    ) {
-
-      goTo(
-        currentSlide - 1
-      );
-
-    }
-
-  }
-
-
-  function updateNavigation() {
-
-    const back =
-      document.getElementById(
-        "backBtn"
-      );
-
-    const next =
-      document.getElementById(
-        "nextBtn"
-      );
-
-    const counter =
-      document.getElementById(
-        "counter"
-      );
-
-
-    counter.innerText =
-      currentSlide +
-      " / " +
-      LAST_SLIDE;
-
-
-    /*
-      Cover
-    */
-
-    if (
-      currentSlide === 0
-    ) {
-
-      back.classList.add(
-        "hidden"
-      );
-
-      next.classList.add(
-        "hidden"
-      );
-
-      return;
-
-    }
-
-
-    /*
-      Final slide
-    */
-
-    if (
-      currentSlide === 13
-    ) {
-
-      back.classList.remove(
-        "hidden"
-      );
-
-      next.classList.add(
-        "hidden"
-      );
-
-      return;
-
-    }
-
-
-    back.classList.remove(
-      "hidden"
+  const button =
+    document.getElementById(
+      "noBtn"
     );
 
 
-    /*
-      Forgiveness slide
-    */
-
-    if (
-      currentSlide === 12
-    ) {
-
-      next.classList.add(
-        "hidden"
-      );
-
-      return;
-
-    }
-
-
-    next.classList.remove(
-      "hidden"
+  const area =
+    document.getElementById(
+      "forgiveArea"
     );
+
+
+  const commentary =
+    document.getElementById(
+      "noCommentary"
+    );
+
+
+  const maxX =
+    Math.max(
+      0,
+      area.clientWidth -
+      button.offsetWidth
+    );
+
+
+  const maxY =
+    Math.max(
+      0,
+      area.clientHeight -
+      button.offsetHeight
+    );
+
+
+  const randomX =
+    Math.random() *
+    maxX;
+
+
+  const randomY =
+    Math.random() *
+    maxY;
+
+
+  button.style.left =
+    randomX +
+    "px";
+
+
+  button.style.top =
+    randomY +
+    "px";
+
+
+  button.style.right =
+    "auto";
+
+
+  /*
+    Preset texts first.
+    Setelah habis:
+    RANDOM TERUS SELAMANYA.
+  */
+
+  if(
+    escapeCount <
+    noTexts.length
+  ){
+
+    button.innerText =
+      noTexts[
+        escapeCount
+      ];
+
+  }
+
+  else{
+
+    button.innerText =
+      randomInfiniteText();
 
   }
 
 
-  /* =========================================================
-     RUNAWAY BUTTON
-  ========================================================= */
+  commentary.innerText =
+    commentaryTexts[
+      escapeCount %
+      commentaryTexts.length
+    ];
 
-  let escapeCount = 0;
+}
 
 
-  const escapeTexts = [
+/* =========================================================
+   FORGIVEN
+========================================================= */
 
-    "Masih kesel",
+function forgiven(){
 
-    "eh",
+  forgivenState =
+    true;
 
-    "yakin?",
 
-    "Ran plis",
+  createConfetti();
 
-    "kok dikejar",
 
-    "ga bisa wkwk",
+  setTimeout(
+    function(){
 
-    "coba yang hijau",
+      goTo(13);
 
-    "huuhhh",
+    },
+    450
+  );
 
-    "opsi tidak tersedia"
+}
+
+
+/* =========================================================
+   CONFETTI
+========================================================= */
+
+function createConfetti(){
+
+  const symbols = [
+
+    "★",
+    "♡",
+    "✦",
+    "🌿",
+    "🐦",
+    "✿",
+    "✨"
 
   ];
 
 
-  function escapeButton() {
+  for(
+    let i = 0;
+    i < 70;
+    i++
+  ){
 
-    escapeCount++;
-
-
-    const button =
-      document.getElementById(
-        "noBtn"
+    const item =
+      document.createElement(
+        "div"
       );
 
 
-    const area =
-      document.getElementById(
-        "forgiveArea"
-      );
+    item.className =
+      "confetti";
 
 
-    const maxX =
-      Math.max(
-        0,
-        area.clientWidth -
-        button.offsetWidth
-      );
+    item.innerText =
+      symbols[
+        Math.floor(
+          Math.random() *
+          symbols.length
+        )
+      ];
 
 
-    const maxY =
-      Math.max(
-        0,
-        area.clientHeight -
-        button.offsetHeight
-      );
-
-
-    const x =
+    item.style.left =
       Math.random() *
-      maxX;
+      100 +
+      "vw";
 
 
-    const y =
+    item.style.fontSize =
+      (
+        12 +
+        Math.random() *
+        24
+      ) +
+      "px";
+
+
+    item.style.animationDelay =
       Math.random() *
-      maxY;
+      .6 +
+      "s";
 
 
-    button.style.left =
-      x + "px";
+    document.body.appendChild(
+      item
+    );
 
-    button.style.top =
-      y + "px";
-
-    button.style.right =
-      "auto";
-
-
-    const index =
-      Math.min(
-        escapeCount,
-        escapeTexts.length - 1
-      );
-
-
-    button.innerText =
-      escapeTexts[index];
-
-  }
-
-
-  /* =========================================================
-     FORGIVEN
-  ========================================================= */
-
-  function forgiven() {
-
-    hasBeenForgiven = true;
-
-    createConfetti();
-
-    /*
-      kasih delay sedikit
-      supaya confetti mulai dulu
-    */
 
     setTimeout(
-      function() {
+      function(){
 
-        goTo(13);
+        item.remove();
 
       },
-      450
+      4200
     );
 
   }
 
-
-  /* =========================================================
-     CONFETTI
-  ========================================================= */
-
-  function createConfetti() {
-
-    const symbols = [
-      "★",
-      "♡",
-      "✦",
-      "🌿",
-      "🐦",
-      "✿"
-    ];
+}
 
 
-    for (
-      let i = 0;
-      i < 55;
-      i++
-    ) {
+/* =========================================================
+   MUSIC
+========================================================= */
 
-      const piece =
-        document.createElement(
-          "div"
-        );
+const music =
+  document.getElementById(
+    "music"
+  );
 
 
-      piece.className =
-        "confetti";
+const musicButton =
+  document.getElementById(
+    "musicBtn"
+  );
 
 
-      piece.innerText =
-        symbols[
-          Math.floor(
-            Math.random() *
-            symbols.length
-          )
-        ];
+const musicReminder =
+  document.getElementById(
+    "musicReminder"
+  );
 
 
-      piece.style.left =
-        Math.random() *
-        100 +
-        "vw";
+let musicPlaying =
+  false;
 
 
-      piece.style.fontSize =
-        (
-          12 +
-          Math.random() *
-          22
-        ) +
-        "px";
+function toggleMusic(){
 
-
-      piece.style.animationDelay =
-        Math.random() *
-        .5 +
-        "s";
-
-
-      document.body.appendChild(
-        piece
-      );
-
-
-      setTimeout(
-        function() {
-
-          piece.remove();
-
-        },
-        4000
-      );
-
-    }
-
-  }
-
-
-  /* =========================================================
-     MUSIC
-  ========================================================= */
-
-  const music =
-    document.getElementById(
-      "music"
+  const source =
+    music.querySelector(
+      "source"
     );
 
 
-  const musicButton =
-    document.getElementById(
-      "musicBtn"
+  if(
+    !source
+  ){
+
+    alert(
+      "lagunya belum dipasang hehe"
     );
 
-
-  let musicPlaying = false;
-
-
-  function toggleMusic() {
-
-    /*
-      Belum ada file musik:
-      jangan error.
-    */
-
-    if (
-      !music.currentSrc &&
-      !music.querySelector("source").src
-    ) {
-
-      alert(
-        "lagunya belum dipasang hehe"
-      );
-
-      return;
-
-    }
-
-
-    if (
-      musicPlaying
-    ) {
-
-      music.pause();
-
-      musicButton.innerText =
-        "▶";
-
-      musicPlaying = false;
-
-    }
-
-    else {
-
-      music
-        .play()
-        .then(
-          function() {
-
-            musicButton.innerText =
-              "❚❚";
-
-            musicPlaying = true;
-
-          }
-        )
-        .catch(
-          function() {
-
-            alert(
-              "browsernya belum mengizinkan musik :("
-            );
-
-          }
-        );
-
-    }
-
+    return;
   }
 
 
-  /* =========================================================
-     KEYBOARD NAV
-  ========================================================= */
+  if(
+    musicPlaying
+  ){
 
-  document
-    .addEventListener(
-      "keydown",
-      function(event) {
+    music.pause();
 
-        if (
-          event.key ===
-          "ArrowRight"
-        ) {
+    musicButton.innerText =
+      "▶";
 
-          nextSlide();
+    musicReminder.classList.remove(
+      "playing"
+    );
+
+    musicPlaying =
+      false;
+
+  }
+
+  else{
+
+    music
+      .play()
+      .then(
+        function(){
+
+          musicButton.innerText =
+            "❚❚";
+
+          musicReminder.classList.add(
+            "playing"
+          );
+
+          musicReminder.childNodes[0].nodeValue =
+            "🎧 lagunya nyala ";
+
+          musicPlaying =
+            true;
 
         }
+      )
+      .catch(
+        function(){
 
-
-        if (
-          event.key ===
-          "ArrowLeft"
-        ) {
-
-          previousSlide();
+          alert(
+            "browsernya belum mengizinkan musik :("
+          );
 
         }
+      );
 
-      }
-    );
+  }
+
+}
 
 
-  updateNavigation();
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  function(event){
+
+    if(
+      event.key ===
+      "ArrowRight"
+    ){
+
+      nextSlide();
+
+    }
+
+
+    if(
+      event.key ===
+      "ArrowLeft"
+    ){
+
+      previousSlide();
+
+    }
+
+  }
+);
+
+
+updateNav();
 
 </script>
 

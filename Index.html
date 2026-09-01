@@ -1,0 +1,2300 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Ketupat untuk Ran</title>
+
+  <style>
+    /* =========================================================
+       BASIC
+    ========================================================= */
+
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --cream: #f3eddd;
+      --paper: #fffdf6;
+      --ink: #292922;
+      --green: #78995a;
+      --green-light: #b7cf84;
+      --yellow: #f5df91;
+      --pink: #eab1ac;
+      --blue: #c9e1e4;
+      --brown: #9d7147;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      background: var(--cream);
+      color: var(--ink);
+      overflow: hidden;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    /* paper grain */
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .10;
+      z-index: 9999;
+
+      background-image:
+        radial-gradient(#222 0.45px, transparent 0.45px);
+
+      background-size: 7px 7px;
+    }
+
+
+    /* =========================================================
+       APP
+    ========================================================= */
+
+    #app {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+
+      padding:
+        55px
+        max(30px, calc((100vw - 1000px) / 2))
+        100px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      opacity: 0;
+      visibility: hidden;
+
+      transform: translateX(30px);
+
+      transition:
+        opacity .4s ease,
+        transform .4s ease,
+        visibility .4s;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(0);
+    }
+
+
+    /* =========================================================
+       PAPER
+    ========================================================= */
+
+    .paper {
+      width: min(900px, 92vw);
+      max-height: 76vh;
+      overflow-y: auto;
+
+      padding: 42px 48px;
+
+      background: var(--paper);
+
+      border: 1px solid rgba(50,40,20,.12);
+
+      box-shadow:
+        0 14px 35px rgba(50,40,20,.12),
+        4px 4px 0 rgba(255,255,255,.8);
+
+      position: relative;
+
+      transform: rotate(-.25deg);
+
+      scrollbar-width: thin;
+    }
+
+    .paper::before {
+      content: "";
+      position: absolute;
+
+      width: 120px;
+      height: 28px;
+
+      top: -10px;
+      left: 50%;
+
+      transform:
+        translateX(-50%)
+        rotate(-2deg);
+
+      background:
+        rgba(218,197,142,.55);
+    }
+
+
+    /* =========================================================
+       TYPOGRAPHY
+    ========================================================= */
+
+    .chapter {
+      display: inline-block;
+
+      font-family:
+        "Courier New",
+        monospace;
+
+      font-size: 12px;
+
+      letter-spacing: 1.5px;
+
+      padding: 7px 12px;
+
+      background: var(--yellow);
+
+      transform: rotate(-1.5deg);
+
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size:
+        clamp(42px, 7vw, 82px);
+
+      line-height: .98;
+
+      margin:
+        0 0 24px;
+
+      font-weight: normal;
+    }
+
+    h2 {
+      font-size:
+        clamp(28px, 4vw, 44px);
+
+      line-height: 1.1;
+
+      margin:
+        0 0 24px;
+
+      font-weight: normal;
+    }
+
+    p {
+      font-size: 17px;
+      line-height: 1.72;
+
+      margin:
+        0 0 17px;
+    }
+
+    strong {
+      font-weight: bold;
+    }
+
+    .tiny {
+      font-family:
+        "Courier New",
+        monospace;
+
+      font-size: 12px;
+
+      opacity: .65;
+    }
+
+    .highlight {
+      background:
+        linear-gradient(
+          transparent 55%,
+          #f6e7a5 55%
+        );
+    }
+
+    .big-line {
+      font-size:
+        clamp(24px, 3vw, 36px);
+
+      line-height: 1.3;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .spacer {
+      height: 15px;
+    }
+
+
+    /* =========================================================
+       COVER
+    ========================================================= */
+
+    #slide0 {
+      background:
+        linear-gradient(
+          #cce5ec 0%,
+          #eaf3ea 65%,
+          #bdd48d 65%,
+          #a5c576 100%
+        );
+    }
+
+    .cover {
+      text-align: center;
+      position: relative;
+      z-index: 20;
+    }
+
+    .cover h1 {
+      margin-bottom: 10px;
+    }
+
+    .cover-sub {
+      display: inline-block;
+
+      padding: 7px 14px;
+
+      background:
+        rgba(255,255,255,.68);
+
+      transform: rotate(-1deg);
+
+      margin-bottom: 32px;
+    }
+
+
+    /* =========================================================
+       KETUPAT
+    ========================================================= */
+
+    .ketupat-wrap {
+      width: 200px;
+      height: 220px;
+
+      margin: 0 auto 12px;
+
+      cursor: pointer;
+
+      position: relative;
+
+      transition:
+        transform .2s ease;
+    }
+
+    .ketupat-wrap:hover {
+      transform:
+        rotate(-3deg)
+        scale(1.07);
+    }
+
+    .ketupat-body {
+      width: 145px;
+      height: 145px;
+
+      position: absolute;
+
+      left: 28px;
+      top: 20px;
+
+      transform: rotate(45deg);
+
+      border-radius: 10px;
+
+      background:
+        linear-gradient(
+          45deg,
+          transparent 28%,
+          #d9e58d 29%,
+          #d9e58d 45%,
+          transparent 46%
+        ),
+        linear-gradient(
+          -45deg,
+          transparent 28%,
+          #a8c866 29%,
+          #a8c866 45%,
+          transparent 46%
+        ),
+        #739847;
+
+      box-shadow:
+        0 15px 24px
+        rgba(0,0,0,.18);
+    }
+
+    .ketupat-tail {
+      width: 8px;
+      height: 85px;
+
+      background: #688d42;
+
+      position: absolute;
+
+      left: 99px;
+      top: 143px;
+
+      transform: rotate(8deg);
+
+      border-radius: 10px;
+    }
+
+    .ketupat-wrap {
+      animation:
+        ketupatFloat
+        2.5s
+        ease-in-out
+        infinite;
+    }
+
+    @keyframes ketupatFloat {
+      0%,100% {
+        transform:
+          translateY(0)
+          rotate(-2deg);
+      }
+
+      50% {
+        transform:
+          translateY(-8px)
+          rotate(2deg);
+      }
+    }
+
+
+    /* =========================================================
+       SCRAPBOOK ELEMENTS
+    ========================================================= */
+
+    .sticky {
+      position: absolute;
+
+      width: 175px;
+
+      padding: 15px;
+
+      font-family:
+        "Courier New",
+        monospace;
+
+      font-size: 12px;
+
+      line-height: 1.5;
+
+      box-shadow:
+        3px 4px 10px
+        rgba(0,0,0,.12);
+    }
+
+    .sticky.yellow {
+      background: #fff1a9;
+    }
+
+    .sticky.pink {
+      background: #edb0aa;
+    }
+
+    .sticky.left {
+      left: 6%;
+      top: 42%;
+
+      transform:
+        rotate(-4deg);
+    }
+
+    .sticky.right {
+      right: 6%;
+      top: 40%;
+
+      transform:
+        rotate(4deg);
+    }
+
+    .quote {
+      padding: 15px 18px;
+
+      margin:
+        20px 0;
+
+      border-left:
+        3px solid var(--green);
+
+      background:
+        #eef1df;
+
+      font-style: italic;
+    }
+
+    .fake-system {
+      font-family:
+        "Courier New",
+        monospace;
+
+      background: #272822;
+      color: #f5f2df;
+
+      padding: 18px;
+
+      margin: 22px 0;
+
+      border-radius: 3px;
+
+      font-size: 13px;
+
+      line-height: 1.7;
+    }
+
+
+    /* =========================================================
+       BIRDS
+    ========================================================= */
+
+    .bird {
+      position: fixed;
+
+      left: -100px;
+
+      z-index: 4;
+
+      pointer-events: none;
+
+      animation:
+        fly
+        linear
+        infinite;
+    }
+
+    .bird.one {
+      top: 12%;
+      font-size: 35px;
+      animation-duration: 16s;
+    }
+
+    .bird.two {
+      top: 27%;
+      font-size: 25px;
+      animation-duration: 21s;
+      animation-delay: -8s;
+    }
+
+    .bird.three {
+      top: 72%;
+      font-size: 29px;
+      animation-duration: 24s;
+      animation-delay: -13s;
+    }
+
+    @keyframes fly {
+      0% {
+        left: -100px;
+        transform:
+          translateY(0)
+          rotate(-4deg);
+      }
+
+      25% {
+        transform:
+          translateY(-20px)
+          rotate(3deg);
+      }
+
+      50% {
+        transform:
+          translateY(12px)
+          rotate(-2deg);
+      }
+
+      75% {
+        transform:
+          translateY(-12px)
+          rotate(3deg);
+      }
+
+      100% {
+        left: calc(100vw + 100px);
+        transform:
+          translateY(0)
+          rotate(-3deg);
+      }
+    }
+
+
+    /* =========================================================
+       NAVIGATION
+    ========================================================= */
+
+    .nav {
+      position: fixed;
+
+      bottom: 22px;
+      left: 50%;
+
+      transform:
+        translateX(-50%);
+
+      width:
+        min(900px, 90vw);
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      z-index: 100;
+    }
+
+    .nav-button {
+      border:
+        1.5px solid #282822;
+
+      background:
+        rgba(255,253,246,.92);
+
+      padding:
+        10px 18px;
+
+      cursor: pointer;
+
+      box-shadow:
+        3px 3px 0
+        #282822;
+
+      transition:
+        .15s ease;
+    }
+
+    .nav-button:hover {
+      transform:
+        translate(-2px,-2px);
+
+      box-shadow:
+        5px 5px 0
+        #282822;
+    }
+
+    #backBtn.hidden,
+    #nextBtn.hidden {
+      visibility: hidden;
+    }
+
+    .counter {
+      font-family:
+        "Courier New",
+        monospace;
+
+      font-size: 12px;
+
+      background:
+        rgba(255,253,246,.8);
+
+      padding:
+        6px 10px;
+    }
+
+
+    /* =========================================================
+       MUSIC
+    ========================================================= */
+
+    .music {
+      position: fixed;
+
+      top: 17px;
+      right: 18px;
+
+      z-index: 500;
+
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      padding:
+        7px 11px;
+
+      background:
+        rgba(255,253,246,.85);
+
+      border:
+        1px solid rgba(0,0,0,.2);
+
+      font-family:
+        "Courier New",
+        monospace;
+
+      font-size: 11px;
+    }
+
+    .music button {
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+
+    /* =========================================================
+       FORGIVENESS
+    ========================================================= */
+
+    .forgive-area {
+      position: relative;
+
+      width: 100%;
+      height: 230px;
+
+      margin-top: 30px;
+    }
+
+    .choice {
+      position: absolute;
+
+      border:
+        2px solid #282822;
+
+      padding:
+        14px 22px;
+
+      cursor: pointer;
+
+      font-size: 17px;
+
+      box-shadow:
+        4px 4px 0
+        #282822;
+    }
+
+    #yesBtn {
+      background: #b5d18b;
+
+      left: 15%;
+      top: 60px;
+    }
+
+    #noBtn {
+      background: #e9aaa5;
+
+      right: 15%;
+      top: 60px;
+
+      transition:
+        left .12s,
+        top .12s;
+    }
+
+
+    /* =========================================================
+       FINAL
+    ========================================================= */
+
+    .final-title {
+      font-size:
+        clamp(55px, 10vw, 110px);
+
+      margin-bottom: 15px;
+    }
+
+    .friend-line {
+      font-size:
+        clamp(27px, 4vw, 48px);
+
+      margin:
+        30px 0;
+    }
+
+
+    /* =========================================================
+       CONFETTI
+    ========================================================= */
+
+    .confetti {
+      position: fixed;
+
+      z-index: 9000;
+
+      top: -30px;
+
+      pointer-events: none;
+
+      animation:
+        fall
+        3.2s
+        linear
+        forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform:
+          translateY(110vh)
+          rotate(600deg);
+
+        opacity: 0;
+      }
+    }
+
+
+    /* =========================================================
+       MOBILE
+    ========================================================= */
+
+    @media (max-width: 700px) {
+
+      .slide {
+        padding:
+          45px 15px 90px;
+      }
+
+      .paper {
+        width: 94vw;
+        max-height: 78vh;
+
+        padding:
+          32px 25px;
+      }
+
+      p {
+        font-size: 15.5px;
+      }
+
+      .sticky {
+        display: none;
+      }
+
+      .nav {
+        width: 92vw;
+      }
+
+      .choice {
+        font-size: 14px;
+        padding: 12px;
+      }
+
+      #yesBtn {
+        left: 5%;
+      }
+
+      #noBtn {
+        right: 5%;
+      }
+
+    }
+  </style>
+</head>
+
+
+<body>
+
+<div id="app">
+
+  <!-- BURUNG GLOBAL -->
+
+  <div class="bird one">🐦</div>
+  <div class="bird two">🕊️</div>
+  <div class="bird three">🐤</div>
+
+
+  <!-- =======================================================
+       SLIDE 0
+  ======================================================== -->
+
+  <section class="slide active" id="slide0">
+
+    <div class="cover">
+
+      <div class="tiny">
+        ketupat_for_ran.html
+      </div>
+
+      <h1>
+        ketupat<br>
+        untuk ran
+      </h1>
+
+      <div class="cover-sub">
+        sebuah website yang sebetulnya
+        tidak perlu dibuat sejauh ini
+      </div>
+
+      <div
+        class="ketupat-wrap"
+        onclick="goTo(1)"
+      >
+
+        <div class="ketupat-body"></div>
+        <div class="ketupat-tail"></div>
+
+      </div>
+
+      <div class="tiny">
+        klik ketupatnya<br>
+        ga ada malware kok
+      </div>
+
+    </div>
+
+
+    <div class="sticky yellow left">
+      isi website:<br><br>
+      minta maaf<br>
+      observasi random<br>
+      ketupat
+    </div>
+
+
+    <div class="sticky pink right">
+      dibuat karena
+      chat apparently
+      tidak cukup
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       SLIDE 1
+  ======================================================== -->
+
+  <section class="slide" id="slide1">
+
+    <div class="paper">
+
+      <div class="chapter">
+        01 / HALO RAN
+      </div>
+
+      <h2>Halo Ran,</h2>
+
+      <p>
+        Saya sampai hari ini masih kepikiran
+        soal protes kamu kemarin.
+      </p>
+
+      <p>
+        Sejujurnya saya agak kaget karena
+        kesalahan saya itu saya hampir
+        diblok oleh Ran.
+      </p>
+
+      <p>
+        Untung kamu ngomong.
+      </p>
+
+      <p>
+        Saya respect sih karena
+        <i>letting me know</i>
+        dan tidak mengghosting tiba-tiba.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       SLIDE 2
+  ======================================================== -->
+
+  <section class="slide" id="slide2">
+
+    <div class="paper">
+
+      <div class="chapter">
+        02 / DISCORD
+      </div>
+
+      <p>
+        Bagi saya Discord itu alter account.
+        Bisa jadi apa saja, siapa saja,
+        kapan saja.
+      </p>
+
+      <p>
+        Jadi berbohong rasanya lebih mudah,
+        karena orang-orang juga berbohong.
+      </p>
+
+      <p>
+        Saya tidak bermaksud mengkhianati
+        kamu dengan sengaja kok.
+        Saya kayaknya...
+        terbawa suasana.
+      </p>
+
+      <p class="big-line">
+        <strong>
+          Eh ternyata efeknya
+          sebegitu seriusnya.
+        </strong>
+      </p>
+
+      <p>
+        Ini fakta baru juga sih bagi saya
+        bahwa si Ran itu cukup genuine
+        dan mau berusaha mengingat
+        hal-hal kecil.
+      </p>
+
+      <p>
+        Padahal ga dibayar kayanya.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       SLIDE 3
+  ======================================================== -->
+
+  <section class="slide" id="slide3">
+
+    <div class="paper">
+
+      <div class="chapter">
+        03 / KENAPA MALAH BIKIN WEBSITE
+      </div>
+
+      <p>
+        Saya bingung mau minta maaf
+        seperti apa yang tepat.
+      </p>
+
+      <p>
+        Saya pikir lagi-lagi kayaknya
+        gacukup kalau lewat chat saja.
+      </p>
+
+      <p>
+        Dan saya juga tersiksa karena
+        gabisa kirim reels karena masih gaenak.
+      </p>
+
+      <p>
+        karena ternyata chat saja tidak cukup
+        dan saya punya terlalu banyak waktu ...
+      </p>
+
+      <p class="big-line">
+        <strong>saya coba deh.</strong>
+      </p>
+
+      <p>
+        semoga meseji-nya tersampaikan.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       SLIDE 4
+  ======================================================== -->
+
+  <section class="slide" id="slide4">
+
+    <div class="paper">
+
+      <div class="chapter">
+        CHAPTER 01 / NGAKU LEPAT
+      </div>
+
+      <h2>Iya, saya salah.</h2>
+
+      <p>
+        <strong>Ran inget ga...</strong>
+      </p>
+
+      <p>
+        Saya pernah cerita saya baca webtoon
+        <i>Pupus Putus Sekolah</i>?
+      </p>
+
+      <p>
+        Salah satunya ada episode
+        yang bahas ketupat.
+      </p>
+
+      <div class="quote">
+        Ketupat = ngaku lepat.<br>
+        Artinya ngaku salah.
+      </div>
+
+      <p>
+        cocok sekali untuk situasi ini.
+      </p>
+
+      <p>
+        Jadi iya Ran,
+        <strong>
+          saya ngaku
+          (udah ngaku duluan kan sebenernya)
+          salah soal berbohong kepadamu
+          tentang tanggal lahir itu.
+        </strong>
+      </p>
+
+      <p>
+        Saya ga sangka kamu berusaha
+        untuk mengingatnya.
+      </p>
+
+      <p>
+        Jadi waktu kamu bilang itu...
+        saya merasa bersalah banget woy.
+      </p>
+
+      <p>
+        Mungkin di masa sebelum kenalan sungguhan,
+        ada kebohongan lain sedikit-sedikit.
+      </p>
+
+      <p>
+        Jadi saya minta maaf juga untuk itu.
+      </p>
+
+      <p>
+        Tapi saya usahakan tak ada lagi
+        informasi palsu ke depannya.
+      </p>
+
+      <p>
+        Ancamanmu cukup seram, Ran.
+      </p>
+
+      <p class="big-line">
+        <strong>Diblokir.</strong>
+      </p>
+
+      <p>
+        Bisa kalang kabut saya.
+      </p>
+
+      <div class="spacer"></div>
+
+      <p>
+        Ohya Ran, kalau kamu ada waktu kosong,
+        ini referensinya:
+      </p>
+
+      <!-- NANTI GANTI LINK -->
+      <p>
+        📎
+        <a
+          href="#"
+          target="_blank"
+        >
+          baca episode ketupat kalau tidak malas
+        </a>
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       SLIDE 5
+  ======================================================== -->
+
+  <section class="slide" id="slide5">
+
+    <div class="paper">
+
+      <div class="chapter">
+        CHAPTER 02 / RAN RAN RAN
+      </div>
+
+      <h2>Disclaimer dulu.</h2>
+
+      <p>
+        Sebetulnya chapter ini sudah saya draft
+        <strong>
+          sebelum kamu DC saya semalam.
+        </strong>
+      </p>
+
+      <p>
+        Jadi sekalian saya buat.
+      </p>
+
+      <p>
+        Ini adalah balasan untuk:
+      </p>
+
+      <p class="big-line">
+        <strong>
+          “Nama Palsunya Lintang”
+        </strong>
+      </p>
+
+      <p>
+        <i>
+          ini sih cuma hasil observasi sementara.
+          belum tentu valid,
+          tapi ini Ran dari kacamata saya.
+        </i>
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       SLIDE 6
+  ======================================================== -->
+
+  <section class="slide" id="slide6">
+
+    <div class="paper">
+
+      <div class="chapter">
+        PERTEMUAN YANG MUNGKIN
+        TIDAK PERNAH TERJADI
+      </div>
+
+      <p>
+        Saya rasa saya juga bohong soal
+        kita pernah ngobrol di Gang Desa.
+      </p>
+
+      <p>
+        Bukan bohong sih.
+      </p>
+
+      <p>
+        Lebih tepatnya saya menerka-nerka
+        bahwa kita pernah bertemu.
+      </p>
+
+      <p>
+        Saya lupa-lupa inget,
+        tapi saya cukup familiar dengan nama itu
+        dan beberapa mutual kita sama.
+      </p>
+
+      <p>
+        jadi saya lempar saja keyakinan saya.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       SLIDE 7
+  ======================================================== -->
+
+  <section class="slide" id="slide7">
+
+    <div class="paper">
+
+      <div class="chapter">
+        PRADUGA TAK BERSALAH
+      </div>
+
+      <p>
+        Setelah keluar masuk voice,
+        ngobrol penting gppenting,
+        melihat illustrasi dan impresi online
+        yang dia buat,
+        harusnya ada sedikit pemahaman tentang
+        Ran Ran ini orangnya seperti apa.
+      </p>
+
+      <p>
+        yang saya tau ran cukup authentic,
+        yang saya notis diawal sebenarnya
+        adalah cara bicaranya,
+        kaya orang malas tapi excited.
+      </p>
+
+      <p class="tiny">
+        ini deskripsinya pokoknya.
+      </p>
+
+      <p>
+        Bakatnya banyak,
+        ngobrol, illustrasi, musik,
+        dan belakangan juga saya jadi tau
+        ran pandai menulis.
+      </p>
+
+      <p>
+        tulisannya janggal, kocak,
+        orisinil dan indah.
+      </p>
+
+      <p>
+        terus ternyata ran wavelengthnya
+        lebar banget,
+        apa aja dia omongin,
+        dan ga yang tipis tipis saja.
+      </p>
+
+      <p class="big-line">
+        Haduh.
+      </p>
+
+      <p>
+        tapi ya Ran,
+        sungguh setelah semua itu
+        saya tetap tidak tau kamu
+        aslinya orang seperti apa.
+      </p>
+
+      <p>
+        Saya terka-terka tapi gagal.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       SLIDE 8
+  ======================================================== -->
+
+  <section class="slide" id="slide8">
+
+    <div class="paper">
+
+      <div class="chapter">
+        RAN YANG KONTRADIKTIF
+      </div>
+
+      <p>
+        Saya pikir Ran orang yang bodo amat.
+      </p>
+
+      <p>
+        dia sering banget bilang
+        <strong>
+          suka suka saya lah kocak,
+        </strong>
+        dia suka kocak kocakin orang deh pokoknya,
+        nah kak seven suka banget tuh
+        kalo kata kocak udah keluar.
+      </p>
+
+      <p>
+        Tapi ternyata ran yang kocak.
+      </p>
+
+      <p>
+        Dia ga sebodo amat itu men,
+        sedikit sedikit revisi,
+        klarifikasi, dan minta maaf.
+      </p>
+
+      <p>
+        jadi sebenernya dia empatinya tinggi,
+        cuma datangnya telat.
+      </p>
+
+      <p>
+        dan ini ciri ciri orang beriman,
+        karena dia banyak berpikir sih sepertinya.
+      </p>
+
+      <p>
+        Nah tapi dia memang orang bodoamat deh,
+        bisa tibatiba cabut begitu saja,
+        atau zoning out tiba tiba melamun
+        saat diajak bicara.
+      </p>
+
+      <p>
+        Jadi jangan pernah estimasikan
+        Ran orang seperti apa.
+      </p>
+
+      <p>
+        dia jiwanya bebas,
+        kayak tupai kali ya,
+        bisa lari lari terus tiba tiba bengong.
+      </p>
+
+      <div class="quote">
+        ini kalo saya ilustrasikan
+        ran adalah tupai gondrong
+        yang pake cerutu isinya rokok,
+        rokok cengkih.
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       SLIDE 9
+  ======================================================== -->
+
+  <section class="slide" id="slide9">
+
+    <div class="paper">
+
+      <div class="chapter">
+        OBSERVER
+      </div>
+
+      <p>
+        Ran juga pandai mengobservasi orang.
+        Kata dia, dia terbiasa membaca pola.
+      </p>
+
+      <p>
+        Untuk ini saya terpaksa setuju,
+        karena praduganya akurat,
+        menyebalkan.
+      </p>
+
+      <p>
+        saya mau balas tapi lagi lagi sulit.
+        ya karena ruang lingkupnya luas nih
+        si ran berubah kapan saja
+      </p>
+
+      <p class="big-line">
+        <strong>#sekilasinfo</strong>
+      </p>
+
+      <p>
+        saya kalau kirim reels ke orang
+        selalu diracik sedemikian rupa,
+        tapi buat ran yang tidak saya pahami ini,
+        akhirnya saya lempar asal.
+      </p>
+
+      <p>
+        reaksinya bagus,
+        atau setidaknya itu yang
+        saya interpretasikan.
+      </p>
+
+      <p>
+        secara dia sampai buat tulisan 2 halaman
+        yang saya unduh 5 kali itu.
+      </p>
+
+      <p class="big-line">
+        baru tau rasa,
+        saya balas 20 halaman nah.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       SLIDE 10
+  ======================================================== -->
+
+  <section class="slide" id="slide10">
+
+    <div class="paper">
+
+      <div class="chapter">
+        CHAPTER 04 /
+        EFEK SAMPING KENAL RAN
+      </div>
+
+      <p class="big-line">
+        Cukup senang.
+      </p>
+
+      <p>
+        Tapi saya jadi banyak mikir
+        kalau balas pesan.
+      </p>
+
+      <p>
+        Kadang saya lempar umpan
+        sebetulnya ga pengen-pengen
+        banget direspon.
+      </p>
+
+      <p>
+        ...
+      </p>
+
+      <p>
+        <strong>(bohong)</strong>
+      </p>
+
+      <p>
+        <strong>Dan ya,</strong>
+        Ran selalu respon.
+      </p>
+
+      <p>
+        Bubblenya panjang panjang lagi.
+        Saya terpaksa harus mikir
+        feedback apa yang tepat.
+      </p>
+
+      <p>
+        Karena kalau naluriah saya
+        mungkin akan balas singkat.
+      </p>
+
+      <p>
+        Tapi saya gamau respon seperti itu
+        karena...
+        <strong>
+          gamau terlihat dangkal WKWK.
+        </strong>
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       SLIDE 11
+  ======================================================== -->
+
+  <section class="slide" id="slide11">
+
+    <div class="paper">
+
+      <div class="chapter">
+        EFEK SAMPING #2
+      </div>
+
+      <p>
+        Bertemu Ran juga membuat saya
+        membangkitkan kebiasaan menulis saya.
+      </p>
+
+      <p>
+        Ntah.
+      </p>
+
+      <p>
+        Sepertinya gaya tulisnya juga
+        sedikit banyak saya ambil.
+      </p>
+
+      <p>
+        Tapi saya naratif sekali.
+        Panjang kalau menulis,
+        dan kurang begitu indah.
+      </p>
+
+      <div class="spacer"></div>
+
+      <p class="tiny">
+        SAYANG SEKALI HARUS DIAKUI
+      </p>
+
+      <p class="big-line">
+        Rutinitas saya berubah sedikiiit...
+        gara-gara Ran?
+      </p>
+
+      <p>...</p>
+
+      <p>
+        <strong>ih malas.</strong>
+      </p>
+
+      <p>...</p>
+
+      <p>
+        tapi memang iya sih.
+      </p>
+
+      <p>
+        <strong>makasih ga ya?</strong>
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       SLIDE 12
+  ======================================================== -->
+
+  <section class="slide" id="slide12">
+
+    <div class="paper">
+
+      <div class="chapter">
+        CHAPTER 05 /
+        KEMBALI KE TUJUAN AWAL
+      </div>
+
+      <h2>Intinya.</h2>
+
+      <p>
+        Jadi inti website yang sangat
+        tidak perlu ini sebenarnya sederhana:
+      </p>
+
+      <p>
+        Minta maaf karena ga proper kemarin,
+        bukan kamu aja yang suka kepikiran,
+        saya juga.
+      </p>
+
+      <p>
+        sekalian menyampaikan hasil pengamatan
+        beberapa minggu kebelakang.
+      </p>
+
+      <div class="spacer"></div>
+
+      <p class="tiny">
+        SEKALI LAGI
+      </p>
+
+      <p>
+        Saya nggak bermaksud
+        mempermainkan kepercayaanmu.
+      </p>
+
+      <p class="big-line">
+        Tapi tetap saja cara saya
+        waktu itu nggak tepat.
+      </p>
+
+      <p>
+        Jadi sekali lagi,
+      </p>
+
+      <h2>
+        Maaf ya, Ran.
+      </h2>
+
+      <div class="spacer"></div>
+
+      <h2 class="center">
+        JADI GIMANA?
+      </h2>
+
+      <p class="center big-line">
+        saya dimaafin?
+      </p>
+
+
+      <div
+        class="forgive-area"
+        id="forgiveArea"
+      >
+
+        <button
+          class="choice"
+          id="yesBtn"
+          onclick="forgiven()"
+        >
+          Yaudah iya deh, huuhh
+        </button>
+
+
+        <button
+          class="choice"
+          id="noBtn"
+          onmouseenter="escapeButton()"
+          onclick="escapeButton()"
+          ontouchstart="escapeButton()"
+        >
+          Masih kesel
+        </button>
+
+      </div>
+
+
+      <p class="tiny center">
+        website ini menghormati
+        seluruh pilihan pengguna*
+      </p>
+
+      <p class="tiny center">
+        *syarat dan ketentuan berlaku
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       SLIDE 13
+  ======================================================== -->
+
+  <section class="slide" id="slide13">
+
+    <div class="paper center">
+
+      <h1 class="final-title">
+        YEY!
+      </h1>
+
+      <h2>
+        dimaafin :D
+      </h2>
+
+      <p class="friend-line">
+        ayo temenan sampe tuwir.
+      </p>
+
+      <p>
+        seperti kata anda ya
+      </p>
+
+      <div class="spacer"></div>
+
+      <p>
+        Nah, setelah ini boleh ya
+        saya kirim kirim reels
+        atau <strong>#pamer</strong>
+        atau <strong>#sekilasinfo</strong>?
+      </p>
+
+      <p>
+        saya juga masih nunggu sesi
+        membaca menulis bercerita
+        main catur sambung lagu
+        dan life update random lainnya
+      </p>
+
+      <div class="spacer"></div>
+
+      <p>
+        Sekian ketupat digital.
+      </p>
+
+      <p>
+        Tidak bisa dimakan.
+      </p>
+
+      <p>
+        Sayang sekali.
+      </p>
+
+      <p style="font-size:40px;">
+        🐦
+      </p>
+
+      <button
+        class="nav-button"
+        onclick="goTo(0)"
+      >
+        balik ke awal
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       GLOBAL NAV
+  ======================================================== -->
+
+  <div
+    class="nav"
+    id="nav"
+  >
+
+    <button
+      class="nav-button hidden"
+      id="backBtn"
+      onclick="previousSlide()"
+    >
+      ← kembali
+    </button>
+
+    <div
+      class="counter"
+      id="counter"
+    >
+      0 / 13
+    </div>
+
+    <button
+      class="nav-button hidden"
+      id="nextBtn"
+      onclick="nextSlide()"
+    >
+      lanjut →
+    </button>
+
+  </div>
+
+
+  <!-- =======================================================
+       MUSIC
+  ======================================================== -->
+
+  <div class="music">
+
+    <button
+      id="musicBtn"
+      onclick="toggleMusic()"
+    >
+      ▶
+    </button>
+
+    <span>
+      soundtrack ketupat
+    </span>
+
+  </div>
+
+
+  <!--
+    NANTI KALAU DI GITHUB:
+    assets/music/lagu.mp3
+  -->
+
+  <audio
+    id="music"
+    loop
+  >
+
+    <source
+      src=""
+      type="audio/mpeg"
+    >
+
+  </audio>
+
+
+</div>
+
+
+<script>
+
+  /* =========================================================
+     SLIDES
+  ========================================================= */
+
+  let currentSlide = 0;
+
+  const LAST_SLIDE = 13;
+
+  let hasBeenForgiven = false;
+
+
+  function goTo(number) {
+
+    if (
+      number < 0 ||
+      number > LAST_SLIDE
+    ) {
+      return;
+    }
+
+
+    document
+      .querySelectorAll(".slide")
+      .forEach(slide => {
+
+        slide.classList.remove("active");
+
+      });
+
+
+    document
+      .getElementById(
+        "slide" + number
+      )
+      .classList.add("active");
+
+
+    currentSlide = number;
+
+    updateNavigation();
+
+  }
+
+
+  function nextSlide() {
+
+    /*
+      Slide 12 tidak boleh lanjut
+      kecuali dimaafin.
+    */
+
+    if (
+      currentSlide === 12 &&
+      !hasBeenForgiven
+    ) {
+      return;
+    }
+
+
+    if (
+      currentSlide < LAST_SLIDE
+    ) {
+
+      goTo(
+        currentSlide + 1
+      );
+
+    }
+
+  }
+
+
+  function previousSlide() {
+
+    if (
+      currentSlide > 0
+    ) {
+
+      goTo(
+        currentSlide - 1
+      );
+
+    }
+
+  }
+
+
+  function updateNavigation() {
+
+    const back =
+      document.getElementById(
+        "backBtn"
+      );
+
+    const next =
+      document.getElementById(
+        "nextBtn"
+      );
+
+    const counter =
+      document.getElementById(
+        "counter"
+      );
+
+
+    counter.innerText =
+      currentSlide +
+      " / " +
+      LAST_SLIDE;
+
+
+    /*
+      Cover
+    */
+
+    if (
+      currentSlide === 0
+    ) {
+
+      back.classList.add(
+        "hidden"
+      );
+
+      next.classList.add(
+        "hidden"
+      );
+
+      return;
+
+    }
+
+
+    /*
+      Final slide
+    */
+
+    if (
+      currentSlide === 13
+    ) {
+
+      back.classList.remove(
+        "hidden"
+      );
+
+      next.classList.add(
+        "hidden"
+      );
+
+      return;
+
+    }
+
+
+    back.classList.remove(
+      "hidden"
+    );
+
+
+    /*
+      Forgiveness slide
+    */
+
+    if (
+      currentSlide === 12
+    ) {
+
+      next.classList.add(
+        "hidden"
+      );
+
+      return;
+
+    }
+
+
+    next.classList.remove(
+      "hidden"
+    );
+
+  }
+
+
+  /* =========================================================
+     RUNAWAY BUTTON
+  ========================================================= */
+
+  let escapeCount = 0;
+
+
+  const escapeTexts = [
+
+    "Masih kesel",
+
+    "eh",
+
+    "yakin?",
+
+    "Ran plis",
+
+    "kok dikejar",
+
+    "ga bisa wkwk",
+
+    "coba yang hijau",
+
+    "huuhhh",
+
+    "opsi tidak tersedia"
+
+  ];
+
+
+  function escapeButton() {
+
+    escapeCount++;
+
+
+    const button =
+      document.getElementById(
+        "noBtn"
+      );
+
+
+    const area =
+      document.getElementById(
+        "forgiveArea"
+      );
+
+
+    const maxX =
+      Math.max(
+        0,
+        area.clientWidth -
+        button.offsetWidth
+      );
+
+
+    const maxY =
+      Math.max(
+        0,
+        area.clientHeight -
+        button.offsetHeight
+      );
+
+
+    const x =
+      Math.random() *
+      maxX;
+
+
+    const y =
+      Math.random() *
+      maxY;
+
+
+    button.style.left =
+      x + "px";
+
+    button.style.top =
+      y + "px";
+
+    button.style.right =
+      "auto";
+
+
+    const index =
+      Math.min(
+        escapeCount,
+        escapeTexts.length - 1
+      );
+
+
+    button.innerText =
+      escapeTexts[index];
+
+  }
+
+
+  /* =========================================================
+     FORGIVEN
+  ========================================================= */
+
+  function forgiven() {
+
+    hasBeenForgiven = true;
+
+    createConfetti();
+
+    /*
+      kasih delay sedikit
+      supaya confetti mulai dulu
+    */
+
+    setTimeout(
+      function() {
+
+        goTo(13);
+
+      },
+      450
+    );
+
+  }
+
+
+  /* =========================================================
+     CONFETTI
+  ========================================================= */
+
+  function createConfetti() {
+
+    const symbols = [
+      "★",
+      "♡",
+      "✦",
+      "🌿",
+      "🐦",
+      "✿"
+    ];
+
+
+    for (
+      let i = 0;
+      i < 55;
+      i++
+    ) {
+
+      const piece =
+        document.createElement(
+          "div"
+        );
+
+
+      piece.className =
+        "confetti";
+
+
+      piece.innerText =
+        symbols[
+          Math.floor(
+            Math.random() *
+            symbols.length
+          )
+        ];
+
+
+      piece.style.left =
+        Math.random() *
+        100 +
+        "vw";
+
+
+      piece.style.fontSize =
+        (
+          12 +
+          Math.random() *
+          22
+        ) +
+        "px";
+
+
+      piece.style.animationDelay =
+        Math.random() *
+        .5 +
+        "s";
+
+
+      document.body.appendChild(
+        piece
+      );
+
+
+      setTimeout(
+        function() {
+
+          piece.remove();
+
+        },
+        4000
+      );
+
+    }
+
+  }
+
+
+  /* =========================================================
+     MUSIC
+  ========================================================= */
+
+  const music =
+    document.getElementById(
+      "music"
+    );
+
+
+  const musicButton =
+    document.getElementById(
+      "musicBtn"
+    );
+
+
+  let musicPlaying = false;
+
+
+  function toggleMusic() {
+
+    /*
+      Belum ada file musik:
+      jangan error.
+    */
+
+    if (
+      !music.currentSrc &&
+      !music.querySelector("source").src
+    ) {
+
+      alert(
+        "lagunya belum dipasang hehe"
+      );
+
+      return;
+
+    }
+
+
+    if (
+      musicPlaying
+    ) {
+
+      music.pause();
+
+      musicButton.innerText =
+        "▶";
+
+      musicPlaying = false;
+
+    }
+
+    else {
+
+      music
+        .play()
+        .then(
+          function() {
+
+            musicButton.innerText =
+              "❚❚";
+
+            musicPlaying = true;
+
+          }
+        )
+        .catch(
+          function() {
+
+            alert(
+              "browsernya belum mengizinkan musik :("
+            );
+
+          }
+        );
+
+    }
+
+  }
+
+
+  /* =========================================================
+     KEYBOARD NAV
+  ========================================================= */
+
+  document
+    .addEventListener(
+      "keydown",
+      function(event) {
+
+        if (
+          event.key ===
+          "ArrowRight"
+        ) {
+
+          nextSlide();
+
+        }
+
+
+        if (
+          event.key ===
+          "ArrowLeft"
+        ) {
+
+          previousSlide();
+
+        }
+
+      }
+    );
+
+
+  updateNavigation();
+
+</script>
+
+</body>
+</html>
